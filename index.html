@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ev Barmeni</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #111827; /* Koyu Gri Arka Plan */
+            color: #f3f4f6; /* Açık Gri Yazı */
+        }
+        .font-display {
+            font-family: 'Playfair Display', serif;
+        }
+        /* Özel Checkbox Stili */
+        .custom-checkbox:checked {
+            background-color: #f59e0b; /* Amber Rengi */
+            border-color: #f59e0b;
+        }
+        .custom-checkbox:checked + label {
+            color: #f59e0b;
+        }
+        /* Sekme Stilleri */
+        .tab-btn {
+            transition: all 0.3s ease;
+        }
+        .tab-btn.active {
+            background-color: #f59e0b;
+            color: #111827;
+        }
+        .tab-content.hidden {
+            display: none;
+        }
+        /* Modal Geçiş Efekti */
+        .modal.hidden {
+            display: none;
+        }
+        .modal {
+            transition: opacity 0.3s ease;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="container mx-auto p-4 sm:p-6 md:p-8 max-w-5xl">
+
+        <!-- Başlık Bölümü -->
+        <header class="text-center mb-8">
+            <h1 class="text-3xl sm:text-4xl md:text-5xl font-display text-amber-400">Ev Barmeni</h1>
+            <p class="text-base sm:text-lg text-gray-400 mt-2">Dolabındakilerle veya tek bir alkolle tarifleri keşfet.</p>
+        </header>
+
+        <!-- Sekmeler -->
+        <div class="mb-8">
+            <div class="flex border-b border-gray-700">
+                <button id="tab-my-ingredients" class="tab-btn active py-2 px-4 font-semibold text-base sm:text-lg rounded-t-lg">Malzeme Dolabım</button>
+                <button id="tab-discover" class="tab-btn py-2 px-4 font-semibold text-base sm:text-lg text-gray-400 rounded-t-lg">Tek Alkolle Keşfet</button>
+            </div>
+        </div>
+
+        <!-- Sekme İçerikleri -->
+        <div>
+            <!-- Malzeme Dolabım Sekmesi -->
+            <div id="content-my-ingredients" class="tab-content">
+                <div class="bg-gray-800 p-4 sm:p-6 rounded-2xl shadow-lg mb-8">
+                    <div id="ingredients-container" class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
+                         <!-- Malzeme kategorileri JavaScript ile buraya eklenecek -->
+                    </div>
+                </div>
+                <div class="text-center">
+                    <button id="find-cocktails-btn" class="w-full sm:w-auto bg-amber-500 hover:bg-amber-600 text-gray-900 font-bold py-3 px-8 rounded-full text-lg shadow-lg transform hover:scale-105 transition-transform duration-300">
+                        Kokteylleri Bul
+                    </button>
+                </div>
+            </div>
+
+            <!-- Tek Alkolle Keşfet Sekmesi -->
+            <div id="content-discover" class="tab-content hidden">
+                 <div class="bg-gray-800 p-4 sm:p-6 rounded-2xl shadow-lg mb-8 flex flex-col sm:flex-row items-center gap-4">
+                    <label for="single-alcohol-select" class="text-lg font-semibold text-gray-300">Bir alkol seç:</label>
+                    <select id="single-alcohol-select" class="flex-grow bg-gray-700 border border-gray-600 text-white text-sm rounded-lg focus:ring-amber-500 focus:border-amber-500 block w-full p-2.5">
+                        <!-- Alkoller buraya eklenecek -->
+                    </select>
+                     <button id="find-by-single-alcohol-btn" class="w-full sm:w-auto mt-3 sm:mt-0 bg-amber-500 hover:bg-amber-600 text-gray-900 font-bold py-3 px-6 rounded-full text-lg shadow-lg">
+                        Keşfet
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Butonlar (Tüm Tarifler) -->
+        <div class="text-center my-8 border-t border-gray-700 pt-8">
+            <p class="text-gray-500 mb-2">Veya...</p>
+            <button id="show-all-btn" class="w-full sm:w-auto bg-gray-600 hover:bg-gray-700 text-white font-bold py-3 px-8 rounded-full text-lg shadow-lg transform hover:scale-105 transition-transform duration-300">
+                Tüm Tarif Kitabını Göster
+            </button>
+        </div>
+
+        <!-- Sonuç Alanları -->
+        <div id="results-area">
+             <div id="perfect-matches-section" class="hidden">
+                <h2 id="perfect-matches-title" class="text-xl sm:text-2xl font-bold mb-4 text-amber-300"></h2>
+                <div id="perfect-matches-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6"></div>
+            </div>
+
+            <div id="near-misses-section" class="hidden mt-12">
+                <h2 class="text-xl sm:text-2xl font-bold mb-4 text-orange-400">Sadece 1 Malzeme Eksik!</h2>
+                <div id="near-misses-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6"></div>
+            </div>
+            
+            <p id="no-results" class="text-center text-gray-500 hidden mt-8">Uygun bir kokteyl bulunamadı.</p>
+        </div>
+
+    </div>
+
+    <!-- Buz Onay Modalı -->
+    <div id="ice-modal" class="modal hidden fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 z-50">
+        <div class="bg-gray-800 rounded-2xl shadow-2xl max-w-sm w-full p-6 text-center">
+            <h3 class="text-xl font-bold text-white mb-4">Bir Saniye...</h3>
+            <p class="text-gray-300 mb-6">"Buz" seçmediğini fark ettik. Çoğu kokteyl için buz gerekir. Dolabında buz var mı?</p>
+            <div class="flex justify-around">
+                <button id="ice-confirm-no" class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-6 rounded-full">Hayır, Buzum Yok</button>
+                <button id="ice-confirm-yes" class="bg-amber-500 hover:bg-amber-600 text-gray-900 font-bold py-2 px-6 rounded-full">Evet, Buzum Var!</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tarif Detay Modalı -->
+    <div id="recipe-modal" class="modal hidden fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 z-50">
+        <div id="modal-content" class="bg-gray-800 rounded-2xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto relative">
+            <!-- Modal içeriği JavaScript ile doldurulacak -->
+        </div>
+    </div>
+
+
+    <script>
+        // --- KÜTÜPHANE (VERİTABANI) ---
+        const ingredientsDB = {
+            alkoller: [ { id: 'vodka', name: 'Votka', abv: 40 }, { id: 'cin', name: 'Cin', abv: 40 }, { id: 'viski', name: 'Viski', abv: 40 }, { id: 'rom', name: 'Rom', abv: 40 }, { id: 'tekila', name: 'Tekila', abv: 40 }, { id: 'bira', name: 'Bira', abv: 5 }, { id: 'kahve_likoru', name: 'Kahve Likörü', abv: 20 }, { id: 'seftali_likoru', name: 'Şeftali Likörü', abv: 20 }, { id: 'campari', name: 'Campari', abv: 25 }, { id: 'tatli_vermut', name: 'Tatlı Vermut', abv: 15 }, { id: 'aperol', name: 'Aperol', abv: 11 }, { id: 'prosecco', name: 'Prosecco / Şampanya', abv: 12 }, { id: 'sarap', name: 'Kırmızı Şarap', abv: 13 }, { id: 'brandy', name: 'Brandy', abv: 40 } ],
+            yancilar: [ { id: 'tonik', name: 'Tonik' }, { id: 'kola', name: 'Kola' }, { id: 'soda', name: 'Soda' }, { id: 'zencefilli_gazoz', name: 'Zencefilli Gazoz' }, { id: 'greyfurtlu_gazoz', name: 'Greyfurtlu Gazoz' }, { id: 'enerji_icecegi', name: 'Enerji İçeceği' }, { id: 'portakal_suyu', name: 'Portakal Suyu' }, { id: 'limon_suyu', name: 'Limon Suyu' }, { id: 'kizilcik_suyu', name: 'Kızılcık Suyu' }, { id: 'greyfurt_suyu', name: 'Greyfurt Suyu' }, { id: 'ananas_suyu', name: 'Ananas Suyu' }, { id: 'buz', name: 'Buz' }, { id: 'nane', name: 'Nane' }, { id: 'limon', name: 'Limon Dilimi' }, { id: 'portakal', name: 'Portakal Dilimi' }, { id: 'seker_surubu', name: 'Şeker Şurubu' }, { id: 'krema', name: 'Krema / Süt' }, { id: 'hindistan_cevizi_kremi', name: 'Hindistan Cevizi Kremi' }, { id: 'grenadine', name: 'Nar Şurubu (Grenadine)' }, { id: 'tuz', name: 'Tuz' }, { id: 'angostura_bitters', name: 'Angostura Bitters' }, { id: 'espresso', name: 'Taze Espresso' }, { id: 'meyveler', name: 'Doğranmış Meyveler' } ]
+        };
+        const cocktailsDB = [
+            { name: 'Sex on the Beach', image: './images/sex-on-the-beach.jpg', ingredients: [ { id: 'vodka', amount: '4 cl' }, { id: 'seftali_likoru', amount: '2 cl' }, { id: 'portakal_suyu', amount: '6 cl' }, { id: 'kizilcik_suyu', amount: '6 cl' }, { id: 'buz', amount: 'Bolca' } ], instructions: 'Buz dolu bir bardağa votka ve şeftali likörünü ekleyin. Üzerini portakal suyu ve kızılcık suyu ile tamamlayın. Hafifçe karıştırıp servis edin.', calories: 210 },
+            { name: 'Negroni', image: './images/negroni.jpg', ingredients: [ { id: 'cin', amount: '3 cl' }, { id: 'campari', amount: '3 cl' }, { id: 'tatli_vermut', amount: '3 cl' }, { id: 'portakal', amount: '1 Kabuk' }, { id: 'buz', amount: 'Bolca' } ], instructions: 'Tüm alkolleri buz dolu bir karıştırma bardağında soğutun. Ardından taze buz dolu bir bardağa süzün. Portakal kabuğu ile süsleyin.', calories: 200 }, { name: 'Old Fashioned', image: './images/old-fashioned.jpg', ingredients: [ { id: 'viski', amount: '6 cl' }, { id: 'seker_surubu', amount: '1 cl' }, { id: 'angostura_bitters', amount: '2 damla' }, { id: 'portakal', amount: '1 Kabuk' }, { id: 'buz', amount: 'Büyük bir küp' } ], instructions: 'Şeker şurubu ve bitteri bir bardakta karıştırın. Viskiyi ve büyük bir buz küpünü ekleyin. Yavaşça karıştırarak soğutun. Portakal kabuğu ile süsleyin.', calories: 155 }, { name: 'Manhattan', image: './images/manhattan.jpg', ingredients: [ { id: 'viski', amount: '6 cl' }, { id: 'tatli_vermut', amount: '3 cl' }, { id: 'angostura_bitters', amount: '2 damla' }, { id: 'buz', amount: 'Bolca' } ], instructions: 'Tüm malzemeleri buz dolu bir karıştırma bardağında iyice soğuyana kadar karıştırın. Soğutulmuş bir kokteyl bardağına süzerek servis edin.', calories: 190 }, { name: 'Espresso Martini', image: './images/espresso-martini.jpg', ingredients: [ { id: 'vodka', amount: '5 cl' }, { id: 'kahve_likoru', amount: '3 cl' }, { id: 'espresso', amount: '3 cl' }, { id: 'buz', amount: 'Bolca' } ], instructions: 'Tüm malzemeleri buz dolu bir shakerda kuvvetlice çalkalayın. Soğutulmuş bir martini bardağına süzerek servis edin.', calories: 230 }, { name: 'Daiquiri', image: './images/daiquiri.jpg', ingredients: [ { id: 'rom', amount: '6 cl' }, { id: 'limon_suyu', amount: '3 cl' }, { id: 'seker_surubu', amount: '2 cl' }, { id: 'buz', amount: 'Bolca' } ], instructions: 'Tüm malzemeleri buz dolu bir shakerda kuvvetlice çalkalayın. Soğutulmuş bir kokteyl bardağına süzerek servis edin.', calories: 220 }, { name: 'Piña Colada', image: './images/pina-colada.jpg', ingredients: [ { id: 'rom', amount: '6 cl' }, { id: 'ananas_suyu', amount: '9 cl' }, { id: 'hindistan_cevizi_kremi', amount: '3 cl' }, { id: 'buz', amount: 'Bolca' } ], instructions: 'Tüm malzemeleri buz ile birlikte bir blendera koyun ve pürüzsüz olana kadar karıştırın. Büyük bir bardağa dökerek servis edin.', calories: 300 }, { name: 'Aperol Spritz', image: './images/aperol-spritz.jpg', ingredients: [ { id: 'prosecco', amount: '9 cl' }, { id: 'aperol', amount: '6 cl' }, { id: 'soda', amount: '3 cl' }, { id: 'portakal', amount: '1 Dilim' }, { id: 'buz', amount: 'Bolca' } ], instructions: 'Buz dolu büyük bir şarap kadehine önce Prosecco\'yu, sonra Aperol\'ü ekleyin. Üzerini soda ile tamamlayın ve portakal dilimi ile süsleyin.', calories: 125 }, { name: 'Sangria', image: './images/sangria.jpg', ingredients: [ { id: 'sarap', amount: '75 cl' }, { id: 'brandy', amount: '6 cl' }, { id: 'portakal_suyu', amount: '15 cl' }, { id: 'seker_surubu', amount: '5 cl' }, { id: 'meyveler', amount: 'Bolca' }, { id: 'buz', amount: 'Bolca' } ], instructions: 'Büyük bir sürahide şarap, brandy, portakal suyu ve şeker şurubunu karıştırın. Doğranmış meyveleri ekleyin. Servis etmeden önce en az 2 saat buzdolabında bekletin. Buz ile servis edin.', calories: 1500 }, { name: 'Submarino (Tekila & Bira)', image: './images/submarino.jpg', ingredients: [ { id: 'bira', amount: '33 cl' }, { id: 'tekila', amount: '4 cl' }, { id: 'limon', amount: '1 Dilim' }, { id: 'tuz', amount: 'Bir tutam' } ], instructions: 'Biranızı bardağa doldurun. Tekila shot\'ınızı hazırlayın. Elinizin üzerine tuz döküp yalayabilir, limonu ısırabilir, ardından tekila shot\'ı içip üzerine biranızı yudumlayabilirsiniz. Alternatif: Tekila shot bardağını direkt bira bardağının içine bırakın!', calories: 250 }, { name: 'Cin Tonik', image: './images/cin-tonik.jpg', ingredients: [ { id: 'cin', amount: '5 cl' }, { id: 'tonik', amount: '15 cl' }, { id: 'limon', amount: '1 Dilim' }, { id: 'buz', amount: 'Bolca' } ], instructions: 'Bardağı ağzına kadar buzla doldurun. Üzerine cini ekleyin. Tonik ile bardağı tamamlayın ve bir dilim limon ile servis edin.', calories: 170 }, { name: 'Votka Portakal (Screwdriver)', image: './images/votka-portakal.jpg', ingredients: [ { id: 'vodka', amount: '5 cl' }, { id: 'portakal_suyu', amount: '15 cl' }, { id: 'buz', amount: 'Bolca' } ], instructions: 'Buzu bardağa doldurun. Votkayı ekleyin ve üzerini portakal suyu ile tamamlayın. Hafifçe karıştırıp servis edin.', calories: 180 }, { name: 'Cuba Libre', image: './images/cuba-libre.jpg', ingredients: [ { id: 'rom', amount: '5 cl' }, { id: 'kola', amount: '12 cl' }, { id: 'limon_suyu', amount: '1 cl' }, { id: 'limon', amount: '1 Dilim' }, { id: 'buz', amount: 'Bolca' } ], instructions: 'Bardağı buzla doldurun. Rom ve limon suyunu ekleyin. Üzerini kola ile tamamlayın ve bir dilim limon ile süsleyin.', calories: 160 }, { name: 'Moscow Mule', image: './images/moscow-mule.jpg', ingredients: [ { id: 'vodka', amount: '6 cl' }, { id: 'zencefilli_gazoz', amount: '12 cl' }, { id: 'limon_suyu', amount: '1 cl' }, { id: 'buz', amount: 'Bolca' }, { id: 'limon', amount: '1 Dilim' } ], instructions: 'Bakır bir kupa veya bardağı buzla doldurun. Votka ve limon suyunu ekleyin. Üzerini zencefilli gazoz ile tamamlayın ve karıştırın. Limon dilimi ile servis edin.', calories: 185 }, { name: 'Mojito', image: './images/mojito.jpg', ingredients: [ { id: 'rom', amount: '6 cl' }, { id: 'soda', amount: 'Üzerini tamamla' }, { id: 'nane', amount: '6-8 Yaprak' }, { id: 'limon_suyu', amount: '3 cl' }, { id: 'seker_surubu', amount: '2 cl' }, { id: 'buz', amount: 'Kırık buz' } ], instructions: 'Nane yaprakları, limon suyu ve şeker şurubunu bardağın dibinde hafifçe ezin. Bardağı kırık buzla doldurun. Romu ekleyin ve karıştırın. Üzerini soda ile tamamlayın.', calories: 240 }, { name: 'Margarita', image: './images/margarita.jpg', ingredients: [ { id: 'tekila', amount: '5 cl' }, { id: 'limon_suyu', amount: '3 cl' }, { id: 'portakal_suyu', amount: '2 cl (Triple Sec yerine)' }, { id: 'buz', amount: 'Bolca' } ], instructions: 'Tüm malzemeleri bol buz ile bir shakera koyun ve iyice çalkalayın. Soğutulmuş bir bardağa süzerek servis edin. İsteğe bağlı olarak bardağın ağzını tuz ile kaplayabilirsiniz.', calories: 200 }, { name: 'Whiskey Sour', image: './images/whiskey-sour.jpg', ingredients: [ { id: 'viski', amount: '6 cl' }, { id: 'limon_suyu', amount: '3 cl' }, { id: 'seker_surubu', amount: '2 cl' }, { id: 'buz', amount: 'Bolca' } ], instructions: 'Tüm malzemeleri buz dolu bir shakerda kuvvetlice çalkalayın. Soğutulmuş bir bardağa, yeni buz üzerine süzerek servis edin.', calories: 210 }, { name: 'Tom Collins', image: './images/tom-collins.jpg', ingredients: [ { id: 'cin', amount: '6 cl' }, { id: 'limon_suyu', amount: '3 cl' }, { id: 'seker_surubu', amount: '2 cl' }, { id: 'soda', amount: 'Üzerini tamamla' }, { id: 'buz', amount: 'Bolca' } ], instructions: 'Cin, limon suyu ve şeker şurubunu buz dolu bir bardakta karıştırın. Üzerini soda ile tamamlayın. Limon dilimi ile süsleyin.', calories: 190 }, { name: 'Black Russian', image: './images/black-russian.jpg', ingredients: [ { id: 'vodka', amount: '5 cl' }, { id: 'kahve_likoru', amount: '2 cl' }, { id: 'buz', amount: 'Bolca' } ], instructions: 'Buz dolu bir bardağa votka ve kahve likörünü ekleyin. Yavaşça karıştırın ve servis edin.', calories: 205 }, { name: 'White Russian', image: './images/white-russian.jpg', ingredients: [ { id: 'vodka', amount: '5 cl' }, { id: 'kahve_likoru', amount: '2 cl' }, { id: 'krema', amount: '3 cl' }, { id: 'buz', amount: 'Bolca' } ], instructions: 'Buz dolu bir bardağa votka ve kahve likörünü ekleyin. Üzerine yavaşça kremayı gezdirin. Karıştırmadan veya hafifçe karıştırarak servis edin.', calories: 260 }, { name: 'Sea Breeze', image: './images/sea-breeze.jpg', ingredients: [ { id: 'vodka', amount: '4 cl' }, { id: 'kizilcik_suyu', amount: '12 cl' }, { id: 'greyfurt_suyu', amount: '3 cl' }, { id: 'buz', amount: 'Bolca' } ], instructions: 'Buz dolu bir bardağa votkayı ekleyin. Üzerine kızılcık ve greyfurt suyunu ekleyip karıştırın.', calories: 180 }, { name: 'Paloma', image: './images/paloma.jpg', ingredients: [ { id: 'tekila', amount: '6 cl' }, { id: 'greyfurtlu_gazoz', amount: 'Üzerini tamamla' }, { id: 'limon_suyu', amount: '1 cl' }, { id: 'buz', amount: 'Bolca' } ], instructions: 'Buz dolu bir bardağa tekila ve limon suyunu ekleyin. Üzerini greyfurtlu gazoz ile tamamlayın. Hafifçe karıştırıp servis edin.', calories: 170 }, { name: 'Tequila Sunrise', image: './images/tequila-sunrise.jpg', ingredients: [ { id: 'tekila', amount: '6 cl' }, { id: 'portakal_suyu', amount: '12 cl' }, { id: 'grenadine', amount: '1 cl' }, { id: 'buz', amount: 'Bolca' } ], instructions: 'Buz dolu bardağa tekila ve portakal suyunu ekleyip karıştırın. Nar şurubunu (grenadine) yavaşça bardağın kenarından dökerek dibe çökmesini ve renk geçişi oluşturmasını sağlayın. Karıştırmadan servis edin.', calories: 230 }, { name: 'Votka Enerji', image: './images/votka-enerji.jpg', ingredients: [ { id: 'vodka', amount: '5 cl' }, { id: 'enerji_icecegi', amount: '15 cl' }, { id: 'buz', amount: 'Bolca' } ], instructions: 'Buz dolu bir bardağa votkayı ekleyin. Üzerini enerji içeceği ile tamamlayın ve hafifçe karıştırın.', calories: 220 }, { name: 'Viski Enerji', image: './images/viski-enerji.jpg', ingredients: [ { id: 'viski', amount: '5 cl' }, { id: 'enerji_icecegi', amount: '15 cl' }, { id: 'buz', amount: 'Bolca' } ], instructions: 'Buz dolu bir bardağa viskiyi ekleyin. Üzerini enerji içeceği ile tamamlayın ve hafifçe karıştırın.', calories: 230 } ];
+
+        // --- UYGULAMA MANTIĞI ---
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const ingredientsContainerEl = document.getElementById('ingredients-container');
+            const findCocktailsBtn = document.getElementById('find-cocktails-btn');
+            const showAllBtn = document.getElementById('show-all-btn');
+            const singleAlcoholSelect = document.getElementById('single-alcohol-select');
+            const findBySingleAlcoholBtn = document.getElementById('find-by-single-alcohol-btn');
+
+            const tabMyIngredients = document.getElementById('tab-my-ingredients');
+            const tabDiscover = document.getElementById('tab-discover');
+            const contentMyIngredients = document.getElementById('content-my-ingredients');
+            const contentDiscover = document.getElementById('content-discover');
+            
+            const perfectMatchesSection = document.getElementById('perfect-matches-section');
+            const perfectMatchesTitle = document.getElementById('perfect-matches-title');
+            const perfectMatchesListEl = document.getElementById('perfect-matches-list');
+            
+            const nearMissesSection = document.getElementById('near-misses-section');
+            const nearMissesListEl = document.getElementById('near-misses-list');
+
+            const noResultsEl = document.getElementById('no-results');
+            
+            const recipeModalEl = document.getElementById('recipe-modal');
+            const modalContentEl = document.getElementById('modal-content');
+
+            const iceModalEl = document.getElementById('ice-modal');
+            const iceConfirmYesBtn = document.getElementById('ice-confirm-yes');
+            const iceConfirmNoBtn = document.getElementById('ice-confirm-no');
+
+            // 1. Malzemeleri ve Keşfet Dropdown'ını Doldur
+            function initializeUI() {
+                // Malzeme listesini render et
+                ingredientsContainerEl.innerHTML = '';
+                for (const category in ingredientsDB) {
+                    const categoryDiv = document.createElement('div');
+                    const categoryTitle = category.charAt(0).toUpperCase() + category.slice(1);
+                    categoryDiv.innerHTML = `<h3 class="text-xl font-bold mb-3 text-amber-200">${categoryTitle}</h3>`;
+                    
+                    const itemsGrid = document.createElement('div');
+                    itemsGrid.className = 'grid grid-cols-1 sm:grid-cols-2 gap-2';
+
+                    ingredientsDB[category].forEach(ingredient => {
+                        const itemDiv = document.createElement('div');
+                        itemDiv.className = 'flex items-center';
+                        itemDiv.innerHTML = `
+                            <input type="checkbox" id="${ingredient.id}" name="${ingredient.id}" class="custom-checkbox h-5 w-5 rounded bg-gray-700 border-gray-600 text-amber-500 focus:ring-amber-500 cursor-pointer">
+                            <label for="${ingredient.id}" class="ml-2 text-gray-300 cursor-pointer">${ingredient.name}</label>
+                        `;
+                        itemsGrid.appendChild(itemDiv);
+                    });
+                    categoryDiv.appendChild(itemsGrid);
+                    ingredientsContainerEl.appendChild(categoryDiv);
+                }
+
+                // Tek alkol dropdown'ını doldur
+                singleAlcoholSelect.innerHTML = '<option value="">Bir alkol seç...</option>';
+                ingredientsDB.alkoller.forEach(alkol => {
+                    const option = document.createElement('option');
+                    option.value = alkol.id;
+                    option.textContent = alkol.name;
+                    singleAlcoholSelect.appendChild(option);
+                });
+            }
+            
+            // 2. Arama sürecini başlat (Malzeme Dolabım)
+            function startSearchProcess() {
+                const isBuzSelected = document.getElementById('buz').checked;
+                const selectedAnyIngredient = document.querySelector('#ingredients-container input:checked');
+
+                if (!selectedAnyIngredient) {
+                    alert('Lütfen en az bir malzeme seçin!');
+                    return;
+                }
+
+                perfectMatchesTitle.textContent = 'Yapabileceğin Kokteyller';
+                nearMissesSection.classList.add('hidden'); 
+
+                if (!isBuzSelected) {
+                    iceModalEl.classList.remove('hidden');
+                } else {
+                    performSearch();
+                }
+            }
+            
+            // 3. Gerçek arama ve sonuç gösterme
+            function performSearch() {
+                const selectedIngredients = Array.from(document.querySelectorAll('#ingredients-container input:checked')).map(input => input.id);
+                const perfectMatches = [];
+                const nearMisses = [];
+
+                cocktailsDB.forEach(cocktail => {
+                    const missingIngredients = cocktail.ingredients.filter(ing => !selectedIngredients.includes(ing.id));
+                    
+                    if (missingIngredients.length === 0) {
+                        perfectMatches.push(cocktail);
+                    } else if (missingIngredients.length === 1) {
+                        const missingId = missingIngredients[0].id;
+                        const isCoreAlcohol = ingredientsDB.alkoller.some(alc => alc.id === missingId);
+                        if (!isCoreAlcohol) {
+                            nearMisses.push({ ...cocktail, missing: missingIngredients[0] });
+                        }
+                    }
+                });
+
+                displayPerfectMatches(perfectMatches);
+                displayNearMisses(nearMisses);
+
+                if (perfectMatches.length === 0 && nearMisses.length === 0) {
+                    noResultsEl.classList.remove('hidden');
+                } else {
+                    noResultsEl.classList.add('hidden');
+                }
+            }
+
+            // 4a. Tam eşleşen sonuçları göster
+            function displayPerfectMatches(cocktails) {
+                perfectMatchesListEl.innerHTML = '';
+                if (cocktails.length > 0) {
+                    perfectMatchesSection.classList.remove('hidden');
+                    cocktails.forEach(cocktail => {
+                        const card = document.createElement('div');
+                        card.className = 'bg-gray-800 rounded-2xl shadow-lg overflow-hidden cursor-pointer transform hover:-translate-y-1 transition-transform duration-300';
+                        card.innerHTML = `<img src="${cocktail.image}" alt="${cocktail.name}" class="w-full h-48 object-cover" onerror="this.onerror=null;this.src='https://placehold.co/400x400/1f2937/f3f4f6?text=Resim+Yok';"><div class="p-4"><h3 class="text-xl font-bold text-amber-400">${cocktail.name}</h3></div>`;
+                        card.addEventListener('click', () => showRecipeModal(cocktail));
+                        perfectMatchesListEl.appendChild(card);
+                    });
+                } else {
+                    perfectMatchesSection.classList.add('hidden');
+                }
+            }
+
+            // 4b. Neredeyse eşleşen sonuçları göster
+            function displayNearMisses(cocktails) {
+                nearMissesListEl.innerHTML = '';
+                if (cocktails.length > 0) {
+                    nearMissesSection.classList.remove('hidden');
+                    cocktails.forEach(cocktail => {
+                        const missingIngredientInfo = Object.values(ingredientsDB).flat().find(i => i.id === cocktail.missing.id);
+                        const card = document.createElement('div');
+                        card.className = 'bg-gray-800 rounded-2xl shadow-lg overflow-hidden cursor-pointer transform hover:-translate-y-1 transition-transform duration-300 border-2 border-dashed border-orange-400/50';
+                        card.innerHTML = `<img src="${cocktail.image}" alt="${cocktail.name}" class="w-full h-48 object-cover opacity-70" onerror="this.onerror=null;this.src='https://placehold.co/400x400/1f2937/f3f4f6?text=Resim+Yok';"><div class="p-4"><h3 class="text-xl font-bold text-orange-400">${cocktail.name}</h3><div class="mt-2 bg-orange-900/50 text-orange-300 p-2 rounded-lg text-center text-sm"><p class="font-bold">Sadece bu eksik:</p><p>${missingIngredientInfo.name}</p></div></div>`;
+                        card.addEventListener('click', () => showRecipeModal(cocktail));
+                        nearMissesListEl.appendChild(card);
+                    });
+                } else {
+                    nearMissesSection.classList.add('hidden');
+                }
+            }
+            
+            // 5. Tarif Modal'ını göster
+            function showRecipeModal(cocktail) {
+                let totalPureAlcohol = 0;
+                cocktail.ingredients.forEach(ing => {
+                    const alcoholInfo = ingredientsDB.alkoller.find(alc => alc.id === ing.id);
+                    if (alcoholInfo) {
+                        const amount = parseFloat(ing.amount);
+                        if (!isNaN(amount)) {
+                            totalPureAlcohol += amount * (alcoholInfo.abv / 100);
+                        }
+                    }
+                });
+
+                modalContentEl.innerHTML = `
+                    <button id="close-modal-btn" class="absolute top-4 right-4 text-gray-400 hover:text-white text-2xl z-10">&times;</button>
+                    <img src="${cocktail.image}" alt="${cocktail.name}" class="w-full h-64 object-cover rounded-t-2xl" onerror="this.onerror=null;this.src='https://placehold.co/600x400/1f2937/f3f4f6?text=Resim+Yok';">
+                    <div class="p-6">
+                        <h2 class="text-3xl font-display text-amber-400 mb-4">${cocktail.name}</h2>
+                        <div class="flex justify-around text-center mb-6 bg-gray-900 p-3 rounded-lg">
+                            <div><p class="text-sm text-gray-400">Kalori</p><p class="text-lg font-bold text-white">${cocktail.calories} kcal</p></div>
+                            <div><p class="text-sm text-gray-400">Saf Alkol</p><p class="text-lg font-bold text-white">${totalPureAlcohol.toFixed(1)} cl</p></div>
+                        </div>
+                        <h3 class="text-xl font-bold text-amber-300 mb-2">Malzemeler</h3>
+                        <ul class="list-disc list-inside mb-6 text-gray-300">
+                            ${cocktail.ingredients.map(ing => { const ingInfo = Object.values(ingredientsDB).flat().find(i => i.id === ing.id); return `<li>${ing.amount} ${ingInfo.name}</li>`; }).join('')}
+                        </ul>
+                        <h3 class="text-xl font-bold text-amber-300 mb-2">Yapılışı</h3>
+                        <p class="text-gray-300 leading-relaxed">${cocktail.instructions}</p>
+                    </div>`;
+                recipeModalEl.classList.remove('hidden');
+                document.getElementById('close-modal-btn').addEventListener('click', () => recipeModalEl.classList.add('hidden'));
+            }
+            
+            // 6. Tüm tarifleri gösteren fonksiyon
+            function showAllRecipes() {
+                perfectMatchesTitle.textContent = 'Tüm Tarifler Kitabı';
+                nearMissesSection.classList.add('hidden');
+                noResultsEl.classList.add('hidden');
+                displayPerfectMatches(cocktailsDB);
+            }
+
+            // 7. Tek Alkolle Arama Fonksiyonu
+            function handleSingleAlcoholSearch() {
+                const selectedAlcoholId = singleAlcoholSelect.value;
+                if (!selectedAlcoholId) {
+                    alert('Lütfen bir alkol seçin.');
+                    return;
+                }
+                const selectedAlcohol = ingredientsDB.alkoller.find(a => a.id === selectedAlcoholId);
+                const matchingCocktails = cocktailsDB.filter(cocktail => 
+                    cocktail.ingredients.some(ing => ing.id === selectedAlcoholId)
+                );
+
+                perfectMatchesTitle.textContent = `${selectedAlcohol.name} ile Yapabileceğin Kokteyller`;
+                nearMissesSection.classList.add('hidden'); // Bu modda "yakın" sonuç yok
+                displayPerfectMatches(matchingCocktails);
+
+                if (matchingCocktails.length === 0) {
+                    noResultsEl.classList.remove('hidden');
+                } else {
+                    noResultsEl.classList.add('hidden');
+                }
+            }
+
+            // 8. Sekme Değiştirme Fonksiyonu
+            function switchTab(tabId) {
+                // Tüm sekmeleri ve içerikleri gizle/pasif yap
+                document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active', 'text-gray-900', 'bg-amber-500'));
+                document.querySelectorAll('.tab-content').forEach(content => content.classList.add('hidden'));
+                
+                // Aktif sekmeyi ve içeriği göster
+                const activeTab = document.getElementById(tabId);
+                const activeContentId = tabId.replace('tab-', 'content-');
+                const activeContent = document.getElementById(activeContentId);
+
+                activeTab.classList.add('active', 'text-gray-900', 'bg-amber-500');
+                activeTab.classList.remove('text-gray-400');
+                activeContent.classList.remove('hidden');
+
+                // Sonuçları temizle
+                perfectMatchesSection.classList.add('hidden');
+                nearMissesSection.classList.add('hidden');
+                noResultsEl.classList.add('hidden');
+            }
+
+            // Olay dinleyicileri
+            findCocktailsBtn.addEventListener('click', startSearchProcess);
+            showAllBtn.addEventListener('click', showAllRecipes);
+            findBySingleAlcoholBtn.addEventListener('click', handleSingleAlcoholSearch);
+            
+            tabMyIngredients.addEventListener('click', () => switchTab('tab-my-ingredients'));
+            tabDiscover.addEventListener('click', () => switchTab('tab-discover'));
+
+            iceConfirmYesBtn.addEventListener('click', () => {
+                document.getElementById('buz').checked = true;
+                iceModalEl.classList.add('hidden');
+                performSearch();
+            });
+
+            iceConfirmNoBtn.addEventListener('click', () => {
+                iceModalEl.classList.add('hidden');
+                performSearch();
+            });
+
+            recipeModalEl.addEventListener('click', (e) => {
+                if (e.target.id === 'recipe-modal') {
+                    recipeModalEl.classList.add('hidden');
+                }
+            });
+
+            // Başlangıç
+            initializeUI();
+            switchTab('tab-my-ingredients'); // Başlangıçta ilk sekmeyi göster
+        });
+    </script>
+</body>
+</html>

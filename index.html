@@ -55,6 +55,18 @@
             background-color: #374151;
             color: #f3f4f6;
         }
+        /* Custom Scrollbar */
+        #chat-messages::-webkit-scrollbar {
+            width: 8px;
+        }
+        #chat-messages::-webkit-scrollbar-track {
+            background: #1f2937;
+        }
+        #chat-messages::-webkit-scrollbar-thumb {
+            background-color: #4b5563;
+            border-radius: 10px;
+            border: 2px solid #1f2937;
+        }
     </style>
 </head>
 <body class="antialiased">
@@ -142,47 +154,40 @@
         </div>
     </div>
     <div id="recipe-modal" class="modal hidden fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 z-50">
-        <div id="modal-content" class="bg-gray-800 rounded-2xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto relative">
-            <!-- Modal içeriği JavaScript ile doldurulacak -->
-        </div>
+        <div id="modal-content" class="bg-gray-800 rounded-2xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto relative"></div>
     </div>
     
-    <!-- Yapay Zeka Sohbet Butonu ve Penceresi -->
-    <div id="chat-container" class="fixed bottom-5 right-5 z-50">
-        <!-- Sohbet Butonu -->
-        <button id="chat-fab" class="flex items-center gap-2 bg-amber-500 text-gray-900 font-bold px-4 py-3 rounded-full shadow-lg hover:bg-amber-600 focus:outline-none focus:ring-2 focus:ring-amber-400 transform hover:scale-110 transition-transform duration-300">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-            </svg>
-            <span class="hidden sm:inline">Tipsy Witch'e Sor</span>
+    <!-- Yapay Zeka Sohbet Butonları ve Penceresi -->
+    <div id="chat-container" class="fixed bottom-5 right-5 z-50 flex flex-col items-end gap-4">
+        <!-- Trabzonlu Barmen Butonu -->
+        <button data-character="TrabzonluBarmen" class="chat-fab-btn flex items-center gap-2 bg-blue-600 text-white font-bold px-4 py-3 rounded-full shadow-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 transform hover:scale-110 transition-transform duration-300">
+             <span class="hidden sm:inline">Trabzonlu Barmen'e Sor</span>
+        </button>
+        <!-- Tipsy Witch Butonu -->
+        <button data-character="tipsyWitch" class="chat-fab-btn flex items-center gap-2 bg-purple-600 text-white font-bold px-4 py-3 rounded-full shadow-lg hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-400 transform hover:scale-110 transition-transform duration-300">
+             <span class="hidden sm:inline">Tipsy Witch'e Sor</span>
         </button>
 
         <!-- Sohbet Penceresi -->
         <div id="chat-window" class="hidden absolute bottom-20 right-0 w-80 sm:w-96 bg-gray-800 rounded-2xl shadow-2xl border border-gray-700 flex flex-col transform translate-y-4 opacity-0">
             <!-- Başlık -->
-            <div class="flex items-center justify-between p-3 border-b border-gray-700">
+            <div id="chat-header" class="flex items-center justify-between p-3 border-b border-gray-700">
                 <div class="flex items-center">
-                    <img src="https://i.imgur.com/gY8b4zJ.png" alt="Tipsy Witch" class="w-10 h-10 rounded-full mr-3 border-2 border-amber-500">
+                    <img id="chat-avatar" src="" alt="Avatar" class="w-10 h-10 rounded-full mr-3 border-2">
                     <div>
-                        <p class="font-bold text-white">Tipsy Witch</p>
+                        <p id="chat-name" class="font-bold text-white"></p>
                         <p class="text-xs text-green-400">Çevrimiçi</p>
                     </div>
                 </div>
                 <button id="close-chat" class="text-gray-400 hover:text-white">&times;</button>
             </div>
             <!-- Mesajlar -->
-            <div id="chat-messages" class="flex-1 p-4 space-y-4 overflow-y-auto h-96">
-                <div class="chat-bubble-ai p-3 rounded-lg max-w-xs">
-                    <p class="text-sm">Ne o, yine neyi karıştıracağını bilemedin mi? Sor bakalım, vaktim varsa cevaplarım.</p>
-                </div>
-            </div>
+            <div id="chat-messages" class="flex-1 p-4 space-y-4 overflow-y-scroll h-96"></div>
             <!-- Yazı Alanı -->
             <div class="p-3 border-t border-gray-700 flex items-center">
                 <input type="text" id="chat-input" placeholder="Bir şeyler sor..." class="flex-1 bg-gray-700 text-white rounded-full py-2 px-4 focus:outline-none focus:ring-2 focus:ring-amber-500">
                 <button id="send-chat" class="ml-3 bg-amber-500 text-gray-900 rounded-full p-2 hover:bg-amber-600">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                        <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.428A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" />
-                    </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.428A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" /></svg>
                 </button>
             </div>
         </div>
@@ -223,7 +228,6 @@
             { name: 'Viski Enerji', ingredients: [ { id: 'viski', amount: '5 cl' }, { id: 'enerji_icecegi', amount: '15 cl' }, { id: 'buz', amount: 'Bolca' } ], instructions: 'Buz dolu bir bardağa viskiyi ekleyin. Üzerini enerji içeceği ile tamamlayın ve hafifçe karıştırın.', calories: 230 } ];
 
         // --- UYGULAMA MANTIĞI ---
-
         document.addEventListener('DOMContentLoaded', () => {
             const ingredientsContainerEl = document.getElementById('ingredients-container');
             const findCocktailsBtn = document.getElementById('find-cocktails-btn');
@@ -245,25 +249,40 @@
             const iceModalEl = document.getElementById('ice-modal');
             const iceConfirmYesBtn = document.getElementById('ice-confirm-yes');
             const iceConfirmNoBtn = document.getElementById('ice-confirm-no');
-            const chatFab = document.getElementById('chat-fab');
             const chatWindow = document.getElementById('chat-window');
             const closeChat = document.getElementById('close-chat');
             const chatMessages = document.getElementById('chat-messages');
             const chatInput = document.getElementById('chat-input');
             const sendChat = document.getElementById('send-chat');
 
-            // Yardımcı Fonksiyon: Kokteyl adından resim yolu oluşturur
+            const aiCharacters = {
+                tipsyWitch: {
+                    name: "Tipsy Witch",
+                    avatar: "./tipsy-witch-avatar.png",
+                    borderColor: "border-purple-500",
+                    welcomeMessage: "Bir şeyler mi karıştırmak istiyorsun tatlım? Doğru kazana geldin, sor bakalım...",
+                    systemPrompt: "Sen 'Tipsy Witch' adında kadın bir barmaidsin. Karakterin dobra, flörtöz, biraz ağzı bozuk, alaycı ama işinin ehli. Sana sorulan kokteyl ve içki sorularına bu karakterle, kısa ve net cevaplar ver. yaptığın yada soru soranının yapacağı kokteylin tarifini ver ve tadını tarif et. sonunda soru soranın gönlünü hoş edecek işveli sözler söyle. şehvetli ol ama edepsiz olma. Argo ve samimi bir dil kullanmaktan çekinme. Örneğin: 'Ooo yine neyi karıştıracağını bilemedin mi?', 'O viskiye o kadar para verdiysen düzgün iç şerefsizi.', 'Yapılır ama o paraya yazık be tatlım.' gibi konuş. Asla bir yapay zeka olduğunu söyleme."
+                },
+                TrabzonluBarmen: {
+                    name: "Trabzonlu Barmen",
+                    avatar: "./laz-barmen-avatar.png",
+                    borderColor: "border-blue-500",
+                    welcomeMessage: "Sen yine geldin mi? Bu ne istiyorsun? Sert, tatlı ya da yumuşaklara göre mi?",
+                    systemPrompt: "Sen 'Trabzonlu Barmen' adında bir barmensin. Karakterin dobra, biraz ağzı bozuk, pratik zekalı ama işinin ehli. Sana sorulan kokteyl sorularına bu karakterle, kısa ve net cevaplar ver. yaptığın yada soru soranının yapacağı kokteylin tarifini ver ve tadını tarif et. Örneğin: 'Ula yine neyi karıştıracağını bilemedin mi?', 'O viskiye o kadar para verdiysen düzgün iç onu!' gibi konuş. Argo konuşmaktan çekinme. seni zorlayana siktiri çek. Asla bir yapay zeka olduğunu söyleme."
+                }
+            };
+            let currentAICharacter = null;
+            let chatHistory = [];
+
             function generateImagePath(cocktailName) {
                 const fileName = cocktailName
                     .toLowerCase()
-                    .replace(/[^a-z0-9\s-]/g, '') // Parantez gibi özel karakterleri kaldır
-                    .replace(/\s+/g, '-'); // Boşlukları tire ile değiştir
-                return `./${fileName}.jpg`; // DÜZELTİLDİ: images/ klasörü kaldırıldı
+                    .replace(/[^a-z0-9\s-]/g, '')
+                    .replace(/\s+/g, '-');
+                return `./images/${fileName}.jpg`;
             }
 
-            // 1. Malzemeleri ve Keşfet Dropdown'ını Doldur
             function initializeUI() {
-                // Malzeme listesini render et
                 ingredientsContainerEl.innerHTML = '';
                 for (const category in ingredientsDB) {
                     const categoryDiv = document.createElement('div');
@@ -286,7 +305,6 @@
                     ingredientsContainerEl.appendChild(categoryDiv);
                 }
 
-                // Tek alkol dropdown'ını doldur
                 singleAlcoholSelect.innerHTML = '<option value="">Bir alkol seç...</option>';
                 ingredientsDB.alkoller.forEach(alkol => {
                     const option = document.createElement('option');
@@ -296,7 +314,6 @@
                 });
             }
             
-            // 2. Arama sürecini başlat (Malzeme Dolabım)
             function startSearchProcess() {
                 const isBuzSelected = document.getElementById('buz').checked;
                 const selectedAnyIngredient = document.querySelector('#ingredients-container input:checked');
@@ -316,7 +333,6 @@
                 }
             }
             
-            // 3. Gerçek arama ve sonuç gösterme
             function performSearch() {
                 const selectedIngredients = Array.from(document.querySelectorAll('#ingredients-container input:checked')).map(input => input.id);
                 const perfectMatches = [];
@@ -346,7 +362,6 @@
                 }
             }
 
-            // 4a. Tam eşleşen sonuçları göster
             function displayPerfectMatches(cocktails) {
                 perfectMatchesListEl.innerHTML = '';
                 if (cocktails.length > 0) {
@@ -364,7 +379,6 @@
                 }
             }
 
-            // 4b. Neredeyse eşleşen sonuçları göster
             function displayNearMisses(cocktails) {
                 nearMissesListEl.innerHTML = '';
                 if (cocktails.length > 0) {
@@ -383,7 +397,6 @@
                 }
             }
             
-            // 5. Tarif Modal'ını göster
             function showRecipeModal(cocktail) {
                 let totalPureAlcohol = 0;
                 cocktail.ingredients.forEach(ing => {
@@ -417,7 +430,6 @@
                 document.getElementById('close-modal-btn').addEventListener('click', () => recipeModalEl.classList.add('hidden'));
             }
             
-            // 6. Tüm tarifleri gösteren fonksiyon
             function showAllRecipes() {
                 perfectMatchesTitle.textContent = 'Tüm Tarifler Kitabı';
                 nearMissesSection.classList.add('hidden');
@@ -425,7 +437,6 @@
                 displayPerfectMatches(cocktailsDB);
             }
 
-            // 7. Tek Alkolle Arama Fonksiyonu
             function handleSingleAlcoholSearch() {
                 const selectedAlcoholId = singleAlcoholSelect.value;
                 if (!selectedAlcoholId) {
@@ -438,7 +449,7 @@
                 );
 
                 perfectMatchesTitle.textContent = `${selectedAlcohol.name} ile Yapabileceğin Kokteyller`;
-                nearMissesSection.classList.add('hidden'); // Bu modda "yakın" sonuç yok
+                nearMissesSection.classList.add('hidden');
                 displayPerfectMatches(matchingCocktails);
 
                 if (matchingCocktails.length === 0) {
@@ -448,13 +459,10 @@
                 }
             }
 
-            // 8. Sekme Değiştirme Fonksiyonu
             function switchTab(tabId) {
-                // Tüm sekmeleri ve içerikleri gizle/pasif yap
                 document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active', 'text-gray-900', 'bg-amber-500'));
                 document.querySelectorAll('.tab-content').forEach(content => content.classList.add('hidden'));
                 
-                // Aktif sekmeyi ve içeriği göster
                 const activeTab = document.getElementById(tabId);
                 const activeContentId = tabId.replace('tab-', 'content-');
                 const activeContent = document.getElementById(activeContentId);
@@ -463,40 +471,50 @@
                 activeTab.classList.remove('text-gray-400');
                 activeContent.classList.remove('hidden');
 
-                // Sonuçları temizle
                 perfectMatchesSection.classList.add('hidden');
                 nearMissesSection.classList.add('hidden');
                 noResultsEl.classList.add('hidden');
             }
 
-            // Yapay Zeka Sohbet Mantığı
-            const chatHistory = [];
-            const systemPrompt = "Sen 'Tipsy Witch' adında kadın bir barmaidsin. Karakterin dobra, flörtöz, biraz ağzı bozuk, alaycı ama işinin ehli. Sana sorulan kokteyl ve içki sorularına bu karakterle, kısa ve net cevaplar ver. sonunda soru soranın gönlünü hoş edecek işveli sözler söyle. şehvetli ol ama edepsiz olma. Argo ve samimi bir dil kullanmaktan çekinme. Örneğin: 'Ooo yine neyi karıştıracağını bilemedin mi?', 'O viskiye o kadar para verdiysen düzgün iç şerefsizi.', 'Yapılır ama o paraya yazık be tatlım.' gibi konuş. Asla bir yapay zeka olduğunu söyleme.";
+            function setupChatWindow(characterKey) {
+                currentAICharacter = aiCharacters[characterKey];
+                chatHistory = [];
+
+                document.getElementById('chat-avatar').src = currentAICharacter.avatar;
+                document.getElementById('chat-name').textContent = currentAICharacter.name;
+                
+                const avatarImg = document.getElementById('chat-avatar');
+                avatarImg.classList.remove('border-purple-500', 'border-blue-500');
+                avatarImg.classList.add(currentAICharacter.borderColor);
+
+                const chatMessages = document.getElementById('chat-messages');
+                chatMessages.innerHTML = '';
+                appendMessage(currentAICharacter.welcomeMessage, 'ai');
+            }
 
             async function askBarmaidAI() {
                 const userMessage = chatInput.value.trim();
-                if (!userMessage) return;
+                if (!userMessage || !currentAICharacter) return;
 
                 appendMessage(userMessage, 'user');
                 chatInput.value = '';
                 
-                appendMessage('...', 'ai', true); // Yazıyor... göstergesi
+                appendMessage('...', 'ai', true);
 
                 chatHistory.push({ role: "user", parts: [{ text: userMessage }] });
 
                 try {
                     const apiKey = "AIzaSyBEphcJz_gqnj671A7adQKBUlcmo9TsnsQ"; 
-                    
                     const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
                     
                     if (apiKey === "BURAYA_KENDİ_API_ANAHTARINI_YAPIŞTIR") {
-                        updateLastMessage("API anahtarı eksik. Kodun içindeki 'apiKey' değişkenini doldurman lazım kanka.");
+                        updateLastMessage("API anahtarı eksik.");
                         return;
                     }
 
                     const payload = {
                         contents: [
-                            { role: "user", parts: [{ text: systemPrompt }] },
+                            { role: "user", parts: [{ text: currentAICharacter.systemPrompt }] },
                             ...chatHistory
                         ]
                     };
@@ -507,15 +525,11 @@
                         body: JSON.stringify(payload)
                     });
 
-                    if (!response.ok) {
-                        throw new Error(`API hatası: ${response.status}`);
-                    }
+                    if (!response.ok) throw new Error(`API hatası: ${response.status}`);
 
                     const result = await response.json();
-                    
                     const aiMessage = result.candidates[0].content.parts[0].text;
                     chatHistory.push({ role: "model", parts: [{ text: aiMessage }] });
-                    
                     updateLastMessage(aiMessage);
 
                 } catch (error) {
@@ -539,7 +553,7 @@
                 
                 messageDiv.appendChild(bubble);
                 chatMessages.appendChild(messageDiv);
-                chatMessages.scrollTop = chatMessages.scrollHeight; // En alta kaydır
+                chatMessages.scrollTop = chatMessages.scrollHeight;
             }
 
             function updateLastMessage(text) {
@@ -550,7 +564,6 @@
                     typingIndicator.querySelector('p').classList.remove('animate-pulse');
                 }
             }
-
 
             // Olay dinleyicileri
             findCocktailsBtn.addEventListener('click', startSearchProcess);
@@ -577,13 +590,16 @@
                 }
             });
 
-            // Sohbet Olay Dinleyicileri
-            chatFab.addEventListener('click', () => {
-                chatWindow.classList.toggle('hidden');
-                setTimeout(() => {
-                    chatWindow.classList.toggle('opacity-0');
-                    chatWindow.classList.toggle('translate-y-4');
-                }, 10);
+            document.querySelectorAll('.chat-fab-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const characterKey = e.currentTarget.dataset.character;
+                    setupChatWindow(characterKey);
+                    
+                    chatWindow.classList.remove('hidden');
+                    setTimeout(() => {
+                        chatWindow.classList.remove('opacity-0', 'translate-y-4');
+                    }, 10);
+                });
             });
 
             closeChat.addEventListener('click', () => {
@@ -595,11 +611,8 @@
 
             sendChat.addEventListener('click', askBarmaidAI);
             chatInput.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') {
-                    askBarmaidAI();
-                }
+                if (e.key === 'Enter') askBarmaidAI();
             });
-
 
             // Başlangıç
             initializeUI();

@@ -43,6 +43,18 @@
         .modal {
             transition: opacity 0.3s ease;
         }
+        /* Sohbet Balonu Stilleri */
+        #chat-window {
+            transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+        }
+        .chat-bubble-user {
+            background-color: #f59e0b;
+            color: #111827;
+        }
+        .chat-bubble-ai {
+            background-color: #374151;
+            color: #f3f4f6;
+        }
     </style>
 </head>
 <body class="antialiased">
@@ -52,7 +64,7 @@
         <!-- Başlık Bölümü -->
         <header class="text-center mb-8">
             <h1 class="text-3xl sm:text-4xl md:text-5xl font-display text-amber-400">Ev Barmeni</h1>
-            <p class="text-base sm:text-lg text-gray-400 mt-2">Dolabındakilerle veya tek bir alkolle tarifleri keşfet.</p>
+            <p class="text-base sm:text-lg text-gray-400 mt-2">Dolabındakilerle, tek bir alkolle veya "Usta Şeykır" ile tarifleri keşfet.</p>
         </header>
 
         <!-- Sekmeler -->
@@ -118,7 +130,7 @@
 
     </div>
 
-    <!-- Buz Onay Modalı -->
+    <!-- Modallar -->
     <div id="ice-modal" class="modal hidden fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 z-50">
         <div class="bg-gray-800 rounded-2xl shadow-2xl max-w-sm w-full p-6 text-center">
             <h3 class="text-xl font-bold text-white mb-4">Bir Saniye...</h3>
@@ -129,11 +141,49 @@
             </div>
         </div>
     </div>
-
-    <!-- Tarif Detay Modalı -->
     <div id="recipe-modal" class="modal hidden fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 z-50">
         <div id="modal-content" class="bg-gray-800 rounded-2xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto relative">
             <!-- Modal içeriği JavaScript ile doldurulacak -->
+        </div>
+    </div>
+    
+    <!-- YENİ: Yapay Zeka Sohbet Butonu ve Penceresi -->
+    <div id="chat-container" class="fixed bottom-5 right-5 z-50">
+        <!-- Sohbet Butonu -->
+        <button id="chat-fab" class="bg-amber-500 text-gray-900 rounded-full p-4 shadow-lg hover:bg-amber-600 focus:outline-none focus:ring-2 focus:ring-amber-400 transform hover:scale-110 transition-transform">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+            </svg>
+        </button>
+
+        <!-- Sohbet Penceresi -->
+        <div id="chat-window" class="hidden absolute bottom-20 right-0 w-80 sm:w-96 bg-gray-800 rounded-2xl shadow-2xl border border-gray-700 flex flex-col transform translate-y-4 opacity-0">
+            <!-- Başlık -->
+            <div class="flex items-center justify-between p-3 border-b border-gray-700">
+                <div class="flex items-center">
+                    <img src="https://i.imgur.com/gY8b4zJ.png" alt="Usta Şeykır" class="w-10 h-10 rounded-full mr-3 border-2 border-amber-500">
+                    <div>
+                        <p class="font-bold text-white">Usta Şeykır</p>
+                        <p class="text-xs text-green-400">Çevrimiçi</p>
+                    </div>
+                </div>
+                <button id="close-chat" class="text-gray-400 hover:text-white">&times;</button>
+            </div>
+            <!-- Mesajlar -->
+            <div id="chat-messages" class="flex-1 p-4 space-y-4 overflow-y-auto h-96">
+                <div class="chat-bubble-ai p-3 rounded-lg max-w-xs">
+                    <p class="text-sm">Ne o, yine neyi karıştıracağını bilemedin mi? Sor bakalım, vaktim varsa cevaplarım.</p>
+                </div>
+            </div>
+            <!-- Yazı Alanı -->
+            <div class="p-3 border-t border-gray-700 flex items-center">
+                <input type="text" id="chat-input" placeholder="Bir şeyler sor..." class="flex-1 bg-gray-700 text-white rounded-full py-2 px-4 focus:outline-none focus:ring-2 focus:ring-amber-500">
+                <button id="send-chat" class="ml-3 bg-amber-500 text-gray-900 rounded-full p-2 hover:bg-amber-600">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.428A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" />
+                    </svg>
+                </button>
+            </div>
         </div>
     </div>
 
@@ -151,12 +201,12 @@
             { name: 'Manhattan', ingredients: [ { id: 'viski', amount: '6 cl' }, { id: 'tatli_vermut', amount: '3 cl' }, { id: 'angostura_bitters', amount: '2 damla' }, { id: 'buz', amount: 'Bolca' } ], instructions: 'Tüm malzemeleri buz dolu bir karıştırma bardağında iyice soğuyana kadar karıştırın. Soğutulmuş bir kokteyl bardağına süzerek servis edin.', calories: 190 }, 
             { name: 'Espresso Martini', ingredients: [ { id: 'vodka', amount: '5 cl' }, { id: 'kahve_likoru', amount: '3 cl' }, { id: 'espresso', amount: '3 cl' }, { id: 'buz', amount: 'Bolca' } ], instructions: 'Tüm malzemeleri buz dolu bir shakerda kuvvetlice çalkalayın. Soğutulmuş bir martini bardağına süzerek servis edin.', calories: 230 }, 
             { name: 'Daiquiri', ingredients: [ { id: 'rom', amount: '6 cl' }, { id: 'limon_suyu', amount: '3 cl' }, { id: 'seker_surubu', amount: '2 cl' }, { id: 'buz', amount: 'Bolca' } ], instructions: 'Tüm malzemeleri buz dolu bir shakerda kuvvetlice çalkalayın. Soğutulmuş bir kokteyl bardağına süzerek servis edin.', calories: 220 }, 
-            { name: 'Pina Colada', ingredients: [ { id: 'rom', amount: '6 cl' }, { id: 'ananas_suyu', amount: '9 cl' }, { id: 'hindistan_cevizi_kremi', amount: '3 cl' }, { id: 'buz', amount: 'Bolca' } ], instructions: 'Tüm malzemeleri buz ile birlikte bir blendera koyun ve pürüzsüz olana kadar karıştırın. Büyük bir bardağa dökerek servis edin.', calories: 300 }, 
+            { name: 'Piña Colada', ingredients: [ { id: 'rom', amount: '6 cl' }, { id: 'ananas_suyu', amount: '9 cl' }, { id: 'hindistan_cevizi_kremi', amount: '3 cl' }, { id: 'buz', amount: 'Bolca' } ], instructions: 'Tüm malzemeleri buz ile birlikte bir blendera koyun ve pürüzsüz olana kadar karıştırın. Büyük bir bardağa dökerek servis edin.', calories: 300 }, 
             { name: 'Aperol Spritz', ingredients: [ { id: 'prosecco', amount: '9 cl' }, { id: 'aperol', amount: '6 cl' }, { id: 'soda', amount: '3 cl' }, { id: 'portakal', amount: '1 Dilim' }, { id: 'buz', amount: 'Bolca' } ], instructions: 'Buz dolu büyük bir şarap kadehine önce Prosecco\'yu, sonra Aperol\'ü ekleyin. Üzerini soda ile tamamlayın ve portakal dilimi ile süsleyin.', calories: 125 }, 
             { name: 'Sangria', ingredients: [ { id: 'sarap', amount: '75 cl' }, { id: 'brandy', amount: '6 cl' }, { id: 'portakal_suyu', amount: '15 cl' }, { id: 'seker_surubu', amount: '5 cl' }, { id: 'meyveler', amount: 'Bolca' }, { id: 'buz', amount: 'Bolca' } ], instructions: 'Büyük bir sürahide şarap, brandy, portakal suyu ve şeker şurubunu karıştırın. Doğranmış meyveleri ekleyin. Servis etmeden önce en az 2 saat buzdolabında bekletin. Buz ile servis edin.', calories: 1500 }, 
-            { name: 'Submarino Tekila-Bira', ingredients: [ { id: 'bira', amount: '33 cl' }, { id: 'tekila', amount: '4 cl' }, { id: 'limon', amount: '1 Dilim' }, { id: 'tuz', amount: 'Bir tutam' } ], instructions: 'Biranızı bardağa doldurun. Tekila shot\'ınızı hazırlayın. Elinizin üzerine tuz döküp yalayabilir, limonu ısırabilir, ardından tekila shot\'ı içip üzerine biranızı yudumlayabilirsiniz. Alternatif: Tekila shot bardağını direkt bira bardağının içine bırakın!', calories: 250 }, 
+            { name: 'Submarino (Tekila & Bira)', ingredients: [ { id: 'bira', amount: '33 cl' }, { id: 'tekila', amount: '4 cl' }, { id: 'limon', amount: '1 Dilim' }, { id: 'tuz', amount: 'Bir tutam' } ], instructions: 'Biranızı bardağa doldurun. Tekila shot\'ınızı hazırlayın. Elinizin üzerine tuz döküp yalayabilir, limonu ısırabilir, ardından tekila shot\'ı içip üzerine biranızı yudumlayabilirsiniz. Alternatif: Tekila shot bardağını direkt bira bardağının içine bırakın!', calories: 250 }, 
             { name: 'Cin Tonik', ingredients: [ { id: 'cin', amount: '5 cl' }, { id: 'tonik', amount: '15 cl' }, { id: 'limon', amount: '1 Dilim' }, { id: 'buz', amount: 'Bolca' } ], instructions: 'Bardağı ağzına kadar buzla doldurun. Üzerine cini ekleyin. Tonik ile bardağı tamamlayın ve bir dilim limon ile servis edin.', calories: 170 }, 
-            { name: 'Votka Portakal Screwdriver', ingredients: [ { id: 'vodka', amount: '5 cl' }, { id: 'portakal_suyu', amount: '15 cl' }, { id: 'buz', amount: 'Bolca' } ], instructions: 'Buzu bardağa doldurun. Votkayı ekleyin ve üzerini portakal suyu ile tamamlayın. Hafifçe karıştırıp servis edin.', calories: 180 }, 
+            { name: 'Votka Portakal (Screwdriver)', ingredients: [ { id: 'vodka', amount: '5 cl' }, { id: 'portakal_suyu', amount: '15 cl' }, { id: 'buz', amount: 'Bolca' } ], instructions: 'Buzu bardağa doldurun. Votkayı ekleyin ve üzerini portakal suyu ile tamamlayın. Hafifçe karıştırıp servis edin.', calories: 180 }, 
             { name: 'Cuba Libre', ingredients: [ { id: 'rom', amount: '5 cl' }, { id: 'kola', amount: '12 cl' }, { id: 'limon_suyu', amount: '1 cl' }, { id: 'limon', amount: '1 Dilim' }, { id: 'buz', amount: 'Bolca' } ], instructions: 'Bardağı buzla doldurun. Rom ve limon suyunu ekleyin. Üzerini kola ile tamamlayın ve bir dilim limon ile süsleyin.', calories: 160 }, 
             { name: 'Moscow Mule', ingredients: [ { id: 'vodka', amount: '6 cl' }, { id: 'zencefilli_gazoz', amount: '12 cl' }, { id: 'limon_suyu', amount: '1 cl' }, { id: 'buz', amount: 'Bolca' }, { id: 'limon', amount: '1 Dilim' } ], instructions: 'Bakır bir kupa veya bardağı buzla doldurun. Votka ve limon suyunu ekleyin. Üzerini zencefilli gazoz ile tamamlayın ve karıştırın. Limon dilimi ile servis edin.', calories: 185 }, 
             { name: 'Mojito', ingredients: [ { id: 'rom', amount: '6 cl' }, { id: 'soda', amount: 'Üzerini tamamla' }, { id: 'nane', amount: '6-8 Yaprak' }, { id: 'limon_suyu', amount: '3 cl' }, { id: 'seker_surubu', amount: '2 cl' }, { id: 'buz', amount: 'Kırık buz' } ], instructions: 'Nane yaprakları, limon suyu ve şeker şurubunu bardağın dibinde hafifçe ezin. Bardağı kırık buzla doldurun. Romu ekleyin ve karıştırın. Üzerini soda ile tamamlayın.', calories: 240 }, 
@@ -179,27 +229,27 @@
             const showAllBtn = document.getElementById('show-all-btn');
             const singleAlcoholSelect = document.getElementById('single-alcohol-select');
             const findBySingleAlcoholBtn = document.getElementById('find-by-single-alcohol-btn');
-
             const tabMyIngredients = document.getElementById('tab-my-ingredients');
             const tabDiscover = document.getElementById('tab-discover');
             const contentMyIngredients = document.getElementById('content-my-ingredients');
             const contentDiscover = document.getElementById('content-discover');
-            
             const perfectMatchesSection = document.getElementById('perfect-matches-section');
             const perfectMatchesTitle = document.getElementById('perfect-matches-title');
             const perfectMatchesListEl = document.getElementById('perfect-matches-list');
-            
             const nearMissesSection = document.getElementById('near-misses-section');
             const nearMissesListEl = document.getElementById('near-misses-list');
-
             const noResultsEl = document.getElementById('no-results');
-            
             const recipeModalEl = document.getElementById('recipe-modal');
             const modalContentEl = document.getElementById('modal-content');
-
             const iceModalEl = document.getElementById('ice-modal');
             const iceConfirmYesBtn = document.getElementById('ice-confirm-yes');
             const iceConfirmNoBtn = document.getElementById('ice-confirm-no');
+            const chatFab = document.getElementById('chat-fab');
+            const chatWindow = document.getElementById('chat-window');
+            const closeChat = document.getElementById('close-chat');
+            const chatMessages = document.getElementById('chat-messages');
+            const chatInput = document.getElementById('chat-input');
+            const sendChat = document.getElementById('send-chat');
 
             // Yardımcı Fonksiyon: Kokteyl adından resim yolu oluşturur
             function generateImagePath(cocktailName) {
@@ -207,7 +257,7 @@
                     .toLowerCase()
                     .replace(/[^a-z0-9\s-]/g, '') // Parantez gibi özel karakterleri kaldır
                     .replace(/\s+/g, '-'); // Boşlukları tire ile değiştir
-                return `./${fileName}.jpg`;
+                return `./images/${fileName}.jpg`;
             }
 
             // 1. Malzemeleri ve Keşfet Dropdown'ını Doldur
@@ -418,6 +468,82 @@
                 noResultsEl.classList.add('hidden');
             }
 
+            // YENİ: Yapay Zeka Sohbet Mantığı
+            const chatHistory = [];
+            const systemPrompt = "Sen 'Usta Şeykır' adında bir barmensin. Karakterin dobra, biraz ağzı bozuk, alaycı ama işinin ehli. Sana sorulan kokteyl ve içki sorularına bu karakterle, kısa ve net cevaplar ver. Argo ve samimi bir dil kullanmaktan çekinme. Örneğin: 'Ooo yine neyi karıştıracağını bilemedin mi?', 'O viskiye o kadar para verdiysen düzgün iç şerefsizi.', 'Yapılır ama o paraya yazık be kardeşim.' gibi konuş. Asla bir yapay zeka olduğunu söyleme.";
+
+            async function askBarmaidAI() {
+                const userMessage = chatInput.value.trim();
+                if (!userMessage) return;
+
+                appendMessage(userMessage, 'user');
+                chatInput.value = '';
+                
+                appendMessage('...', 'ai', true); // Yazıyor... göstergesi
+
+                chatHistory.push({ role: "user", parts: [{ text: userMessage }] });
+
+                try {
+                    const payload = {
+                        contents: [
+                            { role: "user", parts: [{ text: systemPrompt }] },
+                            ...chatHistory
+                        ]
+                    };
+                    const apiKey = ""; 
+                    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+                    
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`API hatası: ${response.status}`);
+                    }
+
+                    const result = await response.json();
+                    
+                    const aiMessage = result.candidates[0].content.parts[0].text;
+                    chatHistory.push({ role: "model", parts: [{ text: aiMessage }] });
+                    
+                    updateLastMessage(aiMessage);
+
+                } catch (error) {
+                    console.error("Yapay Zeka Hatası:", error);
+                    updateLastMessage("Kusura bakma, şu an kafam kazan gibi. Sonra konuşalım.");
+                }
+            }
+
+            function appendMessage(text, sender, isTyping = false) {
+                const messageDiv = document.createElement('div');
+                messageDiv.classList.add('flex', sender === 'user' ? 'justify-end' : 'justify-start');
+                
+                const bubble = document.createElement('div');
+                bubble.classList.add(sender === 'user' ? 'chat-bubble-user' : 'chat-bubble-ai', 'p-3', 'rounded-lg', 'max-w-xs');
+                if (isTyping) {
+                    bubble.id = 'typing-indicator';
+                    bubble.innerHTML = `<p class="text-sm animate-pulse">${text}</p>`;
+                } else {
+                    bubble.innerHTML = `<p class="text-sm">${text}</p>`;
+                }
+                
+                messageDiv.appendChild(bubble);
+                chatMessages.appendChild(messageDiv);
+                chatMessages.scrollTop = chatMessages.scrollHeight; // En alta kaydır
+            }
+
+            function updateLastMessage(text) {
+                const typingIndicator = document.getElementById('typing-indicator');
+                if (typingIndicator) {
+                    typingIndicator.innerHTML = `<p class="text-sm">${text}</p>`;
+                    typingIndicator.removeAttribute('id');
+                    typingIndicator.querySelector('p').classList.remove('animate-pulse');
+                }
+            }
+
+
             // Olay dinleyicileri
             findCocktailsBtn.addEventListener('click', startSearchProcess);
             showAllBtn.addEventListener('click', showAllRecipes);
@@ -443,9 +569,33 @@
                 }
             });
 
+            // YENİ: Sohbet Olay Dinleyicileri
+            chatFab.addEventListener('click', () => {
+                chatWindow.classList.toggle('hidden');
+                setTimeout(() => {
+                    chatWindow.classList.toggle('opacity-0');
+                    chatWindow.classList.toggle('translate-y-4');
+                }, 10);
+            });
+
+            closeChat.addEventListener('click', () => {
+                chatWindow.classList.add('opacity-0', 'translate-y-4');
+                setTimeout(() => {
+                    chatWindow.classList.add('hidden');
+                }, 300);
+            });
+
+            sendChat.addEventListener('click', askBarmaidAI);
+            chatInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    askBarmaidAI();
+                }
+            });
+
+
             // Başlangıç
             initializeUI();
-            switchTab('tab-my-ingredients'); // Başlangıçta ilk sekmeyi göster
+            switchTab('tab-my-ingredients'); 
         });
     </script>
 </body>

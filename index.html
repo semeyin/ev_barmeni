@@ -64,7 +64,7 @@
         <!-- Başlık Bölümü -->
         <header class="text-center mb-8">
             <h1 class="text-3xl sm:text-4xl md:text-5xl font-display text-amber-400">Ev Barmeni</h1>
-            <p class="text-base sm:text-lg text-gray-400 mt-2">Dolabındakilerle, tek bir alkolle ya da Usta Şeykır ile tarifleri keşfet.</p>
+            <p class="text-base sm:text-lg text-gray-400 mt-2">Dolabındakilerle, tek bir alkolle ya da Tipsy Witch ile tarifleri keşfet.</p>
         </header>
 
         <!-- Sekmeler -->
@@ -154,7 +154,7 @@
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
             </svg>
-            <span class="hidden sm:inline">Usta Şeykır'a Sor</span>
+            <span class="hidden sm:inline">Tipsy Witch'e Sor</span>
         </button>
 
         <!-- Sohbet Penceresi -->
@@ -162,9 +162,9 @@
             <!-- Başlık -->
             <div class="flex items-center justify-between p-3 border-b border-gray-700">
                 <div class="flex items-center">
-                    <img src="https://i.imgur.com/gY8b4zJ.png" alt="Usta Şeykır" class="w-10 h-10 rounded-full mr-3 border-2 border-amber-500">
+                    <img src="https://i.imgur.com/gY8b4zJ.png" alt="Tipsy Witch" class="w-10 h-10 rounded-full mr-3 border-2 border-amber-500">
                     <div>
-                        <p class="font-bold text-white">Usta Şeykır</p>
+                        <p class="font-bold text-white">Tipsy Witch</p>
                         <p class="text-xs text-green-400">Çevrimiçi</p>
                     </div>
                 </div>
@@ -471,7 +471,7 @@
 
             // Yapay Zeka Sohbet Mantığı
             const chatHistory = [];
-            const systemPrompt = "Sen 'Usta Şeykır' adında kadın bir barmaidsin. Karakterin dobra, flörtöz, biraz ağzı bozuk, alaycı ama işinin ehli. Sana sorulan kokteyl ve içki sorularına bu karakterle, kısa ve net cevaplar ver. sonunda soru soranın gönlünü hoş edecek işveli sözler söyle. şehvetli ol ama edepsiz olma. Argo ve samimi bir dil kullanmaktan çekinme. Örneğin: 'Ooo yine neyi karıştıracağını bilemedin mi?', 'O viskiye o kadar para verdiysen düzgün iç şerefsizi.', 'Yapılır ama o paraya yazık be tatlım.' gibi konuş. Asla bir yapay zeka olduğunu söyleme.";
+            const systemPrompt = "Sen 'Tipsy Witch' adında kadın bir barmaidsin. Karakterin dobra, flörtöz, biraz ağzı bozuk, alaycı ama işinin ehli. Sana sorulan kokteyl ve içki sorularına bu karakterle, kısa ve net cevaplar ver. sonunda soru soranın gönlünü hoş edecek işveli sözler söyle. şehvetli ol ama edepsiz olma. Argo ve samimi bir dil kullanmaktan çekinme. Örneğin: 'Ooo yine neyi karıştıracağını bilemedin mi?', 'O viskiye o kadar para verdiysen düzgün iç şerefsizi.', 'Yapılır ama o paraya yazık be tatlım.' gibi konuş. Asla bir yapay zeka olduğunu söyleme.";
 
             async function askBarmaidAI() {
                 const userMessage = chatInput.value.trim();

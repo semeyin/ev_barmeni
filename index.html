@@ -64,7 +64,7 @@
         <!-- Başlık Bölümü -->
         <header class="text-center mb-8">
             <h1 class="text-3xl sm:text-4xl md:text-5xl font-display text-amber-400">Ev Barmeni</h1>
-            <p class="text-base sm:text-lg text-gray-400 mt-2">Dolabındakilerle, tek bir alkolle veya "Usta Şeykır" ile tarifleri keşfet.</p>
+            <p class="text-base sm:text-lg text-gray-400 mt-2">Dolabındakilerle veya tek bir alkolle tarifleri keşfet.</p>
         </header>
 
         <!-- Sekmeler -->
@@ -149,11 +149,12 @@
     
     <!-- YENİ: Yapay Zeka Sohbet Butonu ve Penceresi -->
     <div id="chat-container" class="fixed bottom-5 right-5 z-50">
-        <!-- Sohbet Butonu -->
-        <button id="chat-fab" class="bg-amber-500 text-gray-900 rounded-full p-4 shadow-lg hover:bg-amber-600 focus:outline-none focus:ring-2 focus:ring-amber-400 transform hover:scale-110 transition-transform">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <!-- Sohbet Butonu (YENİ TASARIM) -->
+        <button id="chat-fab" class="flex items-center gap-2 bg-amber-500 text-gray-900 font-bold px-4 py-3 rounded-full shadow-lg hover:bg-amber-600 focus:outline-none focus:ring-2 focus:ring-amber-400 transform hover:scale-110 transition-transform duration-300">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
             </svg>
+            <span class="hidden sm:inline">Usta Şeykır'a Sor</span>
         </button>
 
         <!-- Sohbet Penceresi -->
@@ -484,14 +485,24 @@
                 chatHistory.push({ role: "user", parts: [{ text: userMessage }] });
 
                 try {
+                    // !!! ÖNEMLİ !!!
+                    // KENDİ GOOGLE AI STUDIO API ANAHTARINI AŞAĞIDAKİ TIRNAKLARIN İÇİNE YAPIŞTIR
+                    // BU ANAHTARI GITHUB'DA HERKESE AÇIK BİR ŞEKİLDE PAYLAŞMA!
+                    const apiKey = "AIzaSyBEphcJz_gqnj671A7adQKBUlcmo9TsnsQ"; 
+                    
+                    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+                    
+                    if (apiKey === "AIzaSyBEphcJz_gqnj671A7adQKBUlcmo9TsnsQ") {
+                        updateLastMessage("API anahtarı eksik. Kodun içindeki 'apiKey' değişkenini doldurman lazım kanka.");
+                        return;
+                    }
+
                     const payload = {
                         contents: [
                             { role: "user", parts: [{ text: systemPrompt }] },
                             ...chatHistory
                         ]
                     };
-                    const apiKey = ""; 
-                    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
                     
                     const response = await fetch(apiUrl, {
                         method: 'POST',

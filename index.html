@@ -76,7 +76,7 @@
         <!-- Başlık Bölümü -->
         <header class="text-center mb-8">
             <h1 class="text-3xl sm:text-4xl md:text-5xl font-display text-amber-400">Ev Barmeni</h1>
-            <p class="text-base sm:text-lg text-gray-400 mt-2">Dolabındakilerle, tek bir alkolle ya da Barmenlerle tarifleri keşfet.</p>
+            <p class="text-base sm:text-lg text-gray-400 mt-2">Dolabındakilerle, tek bir alkolle ya da Tipsy Witch ile tarifleri keşfet.</p>
         </header>
 
         <!-- Sekmeler -->
@@ -279,7 +279,7 @@
                     .toLowerCase()
                     .replace(/[^a-z0-9\s-]/g, '')
                     .replace(/\s+/g, '-');
-                return `./images/${fileName}.jpg`;
+                return `./${fileName}.jpg`;
             }
 
             function initializeUI() {

@@ -113,7 +113,7 @@
              <span class="sm:inline">Tipsy Witch'e Sor</span>
         </button>
         <!-- Sohbet Penceresi -->
-        <div id="chat-window" class="hidden absolute bottom-20 right-0 w-80 sm:w-96 bg-white rounded-2xl shadow-2xl border border-gray-200 flex flex-col transform translate-y-4 opacity-0">
+        <div id="chat-window" class="hidden absolute bottom-20 right-0 w-80 sm:w-96 bg-white rounded-2xl shadow-2xl border border-gray-200 flex flex-col transform translate-y-4 opacity-0 h-[32rem]">
             <div id="chat-header" class="flex items-center justify-between p-3 border-b border-gray-200">
                 <div class="flex items-center">
                     <img id="chat-avatar" src="" alt="Avatar" class="w-10 h-10 rounded-full mr-3 border-2">
@@ -124,7 +124,7 @@
                 </div>
                 <button id="close-chat" class="text-gray-500 hover:text-gray-800 text-2xl">&times;</button>
             </div>
-            <div id="chat-messages" class="flex-1 p-4 space-y-4 overflow-y-scroll h-96 bg-gray-50"></div>
+            <div id="chat-messages" class="flex-1 p-4 space-y-4 overflow-y-auto bg-gray-50 min-h-0"></div>
             <div class="p-3 border-t border-gray-200 flex items-center">
                 <input type="text" id="chat-input" placeholder="Bir şeyler sor..." class="flex-1 bg-gray-100 text-gray-800 rounded-full py-2 px-4 focus:outline-none focus:ring-2 focus:ring-pink-500">
                 <button id="send-chat" class="ml-3 bg-pink-600 text-white rounded-full p-2 hover:bg-pink-700">

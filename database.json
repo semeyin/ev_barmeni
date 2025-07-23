@@ -141,5 +141,33 @@
     { "name": "Brandy Alexander", "base_alcohol": "brandy", "ingredients": [ { "id": "brandy", "amount": "3 cl" }, { "id": "kakao_likoru", "amount": "3 cl" }, { "id": "krema", "amount": "3 cl" } ], "instructions": "Tüm malzemeler buz dolu bir shaker'da çalkalanır ve soğutulmuş bardağa süzülür.", "calories": 250 },
     { "name": "Pina Colada", "base_alcohol": "rom", "ingredients": [ { "id": "rom", "amount": "6 cl" }, { "id": "ananas_suyu", "amount": "9 cl" }, { "id": "hindistan_cevizi_kremi", "amount": "3 cl" }, { "id": "buz", "amount": "Bolca" } ], "instructions": "Tüm malzemeleri buz ile birlikte bir blendera koyun ve pürüzsüz olana kadar karıştırın. Büyük bir bardağa dökerek servis edin.", "calories": 300 },
     { "name": "Sex on the Beach", "base_alcohol": "vodka", "ingredients": [ { "id": "vodka", "amount": "4 cl" }, { "id": "seftali_likoru", "amount": "2 cl" }, { "id": "portakal_suyu", "amount": "6 cl" }, { "id": "kizilcik_suyu", "amount": "6 cl" } ], "instructions": "Buz dolu bir bardağa votka ve şeftali likörünü ekleyin. Üzerini portakal suyu ve kızılcık suyu ile tamamlayın. Hafifçe karıştırıp servis edin.", "calories": 210 }
+ {"name": "Votka Enerji","base_alcohol": "vodka","ingredients": [ { "id": "vodka", "amount": "5 cl" },
+            { "id": "enerji_icecegi", "amount": "15 cl" },
+            { "id": "buz", "amount": "Bolca" }
+        ],
+        "instructions": "Buz dolu bir bardağa votkayı ekleyin. Üzerini enerji içeceği ile tamamlayın ve hafifçe karıştırın.",
+        "calories": 220
+    },
+    {
+        "name": "Viski Enerji",
+        "base_alcohol": "viski",
+        "ingredients": [
+            { "id": "viski", "amount": "5 cl" },
+            { "id": "enerji_icecegi", "amount": "15 cl" },
+            { "id": "buz", "amount": "Bolca" }
+        ],
+        "instructions": "Buz dolu bir bardağa viskiyi ekleyin. Üzerini enerji içeceği ile tamamlayın ve hafifçe karıştırın.",
+        "calories": 230
+    },
+    {
+        "name": "Jager Bomb",
+        "base_alcohol": "jagermeister",
+        "ingredients": [
+            { "id": "jagermeister", "amount": "4 cl" },
+            { "id": "enerji_icecegi", "amount": "1/2 kutu" }
+        ],
+        "instructions": "Bir shot bardağı Jägermeister, büyük bir bardak enerji içeceğinin içine bırakılır ve hızlıca içilir.",
+        "calories": 250
+    },
   ]
 }

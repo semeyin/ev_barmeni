@@ -11,182 +11,123 @@
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #111827; /* Koyu Gri Arka Plan */
-            color: #f3f4f6; /* Açık Gri Yazı */
+            background-color: #f9fafb; /* Açık Gri Arka Plan */
+            color: #111827; /* Koyu Yazı */
         }
         .font-display {
             font-family: 'Playfair Display', serif;
         }
-        /* Özel Checkbox Stili */
         .custom-checkbox:checked {
-            background-color: #f59e0b; /* Amber Rengi */
-            border-color: #f59e0b;
+            background-color: #db2777; /* Pembe */
+            border-color: #db2777;
         }
         .custom-checkbox:checked + label {
-            color: #f59e0b;
+            color: #db2777;
+            font-weight: 600;
         }
-        /* Sekme Stilleri */
-        .tab-btn {
-            transition: all 0.3s ease;
-        }
-        .tab-btn.active {
-            background-color: #f59e0b;
-            color: #111827;
-        }
-        .tab-content.hidden {
-            display: none;
-        }
-        /* Modal Geçiş Efekti */
-        .modal.hidden {
-            display: none;
-        }
-        .modal {
-            transition: opacity 0.3s ease;
-        }
-        /* Sohbet Balonu Stilleri */
-        #chat-window {
-            transition: transform 0.3s ease-out, opacity 0.3s ease-out;
-        }
-        .chat-bubble-user {
-            background-color: #f59e0b;
-            color: #111827;
-        }
-        .chat-bubble-ai {
-            background-color: #374151;
-            color: #f3f4f6;
-        }
-        /* Custom Scrollbar */
-        #chat-messages::-webkit-scrollbar {
-            width: 8px;
-        }
-        #chat-messages::-webkit-scrollbar-track {
-            background: #1f2937;
-        }
-        #chat-messages::-webkit-scrollbar-thumb {
-            background-color: #4b5563;
-            border-radius: 10px;
-            border: 2px solid #1f2937;
-        }
+        .modal.hidden { display: none; }
+        .modal { transition: opacity 0.3s ease; }
+        #chat-window { transition: transform 0.3s ease-out, opacity 0.3s ease-out; }
+        .chat-bubble-user { background-color: #db2777; color: #fff; }
+        .chat-bubble-ai { background-color: #e5e7eb; color: #1f2937; }
+        #chat-messages::-webkit-scrollbar { width: 8px; }
+        #chat-messages::-webkit-scrollbar-track { background: #f1f5f9; }
+        #chat-messages::-webkit-scrollbar-thumb { background-color: #9ca3af; border-radius: 10px; border: 2px solid #f1f5f9; }
     </style>
 </head>
 <body class="antialiased">
 
-    <div class="container mx-auto p-4 sm:p-6 md:p-8 max-w-5xl">
+    <div class="container mx-auto p-4 sm:p-6 md:p-8 max-w-7xl">
 
         <!-- Başlık Bölümü -->
-        <header class="text-center mb-8">
-            <h1 class="text-3xl sm:text-4xl md:text-5xl font-display text-amber-400">Ev Barmeni</h1>
-            <p class="text-base sm:text-lg text-gray-400 mt-2">Dolabındakilerle, tek bir alkolle ya da Barmenlerle tarifleri keşfet.</p>
+        <header class="text-center mb-12">
+            <h1 class="text-4xl sm:text-5xl md:text-6xl font-display text-pink-600">Ev Barmeni</h1>
+            <p class="text-lg sm:text-xl text-gray-600 mt-4 max-w-3xl mx-auto">Tarif kitabına göz at, elindeki malzemeleri seç veya bırak barmenlerimiz sana özel tarifler hazırlasın.</p>
         </header>
 
-        <!-- Sekmeler -->
-        <div class="mb-8">
-            <div class="flex border-b border-gray-700">
-                <button id="tab-my-ingredients" class="tab-btn active py-2 px-4 font-semibold text-base sm:text-lg rounded-t-lg">Malzeme Dolabım</button>
-                <button id="tab-discover" class="tab-btn py-2 px-4 font-semibold text-base sm:text-lg text-gray-400 rounded-t-lg">Tek Alkolle Keşfet</button>
-            </div>
-        </div>
-
-        <!-- Sekme İçerikleri -->
-        <div>
-            <!-- Malzeme Dolabım Sekmesi -->
-            <div id="content-my-ingredients" class="tab-content">
-                <div class="bg-gray-800 p-4 sm:p-6 rounded-2xl shadow-lg mb-8">
-                    <div id="ingredients-container" class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
-                         <!-- Malzeme kategorileri JavaScript ile buraya eklenecek -->
+        <!-- Arama ve Keşfet Bölümü -->
+        <div class="bg-white p-6 rounded-2xl shadow-lg mb-12 border border-gray-200">
+            <h2 class="text-2xl font-bold mb-4 text-gray-800">Tarifleri Keşfet</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Malzeme Dolabım -->
+                <div class="flex flex-col">
+                    <h3 class="text-lg font-semibold mb-3 text-pink-600">Malzeme Dolabım</h3>
+                    <p class="text-gray-500 mb-4 text-sm">Elindeki malzemeleri seç, sana özel tarifleri bulalım.</p>
+                    <div id="ingredients-container" class="max-h-48 overflow-y-auto pr-2 space-y-2">
+                        <!-- Malzemeler buraya gelecek -->
                     </div>
-                </div>
-                <div class="text-center">
-                    <button id="find-cocktails-btn" class="w-full sm:w-auto bg-amber-500 hover:bg-amber-600 text-gray-900 font-bold py-3 px-8 rounded-full text-lg shadow-lg transform hover:scale-105 transition-transform duration-300">
-                        Kokteylleri Bul
+                     <button id="find-cocktails-btn" class="mt-auto w-full bg-pink-600 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded-lg transition-colors">
+                        Malzemelerimle Bul
                     </button>
                 </div>
-            </div>
-
-            <!-- Tek Alkolle Keşfet Sekmesi -->
-            <div id="content-discover" class="tab-content hidden">
-                 <div class="bg-gray-800 p-4 sm:p-6 rounded-2xl shadow-lg mb-8 flex flex-col sm:flex-row items-center gap-4">
-                    <label for="single-alcohol-select" class="text-lg font-semibold text-gray-300">Bir alkol seç:</label>
-                    <select id="single-alcohol-select" class="flex-grow bg-gray-700 border border-gray-600 text-white text-sm rounded-lg focus:ring-amber-500 focus:border-amber-500 block w-full p-2.5">
+                <!-- Tek Alkolle Keşfet -->
+                <div class="flex flex-col">
+                    <h3 class="text-lg font-semibold mb-3 text-pink-600">Tek Alkolle Keşfet</h3>
+                     <p class="text-gray-500 mb-4 text-sm">Bir alkol seç, onunla yapılan tüm tarifleri gör.</p>
+                    <select id="single-alcohol-select" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-pink-500 focus:border-pink-500 block w-full p-2.5">
                         <!-- Alkoller buraya eklenecek -->
                     </select>
-                     <button id="find-by-single-alcohol-btn" class="w-full sm:w-auto mt-3 sm:mt-0 bg-amber-500 hover:bg-amber-600 text-gray-900 font-bold py-3 px-6 rounded-full text-lg shadow-lg">
-                        Keşfet
+                    <button id="find-by-single-alcohol-btn" class="mt-auto w-full bg-pink-600 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded-lg transition-colors">
+                        Bu Alkolle Keşfet
                     </button>
                 </div>
             </div>
+             <!-- Tüm Tarifler Butonu -->
+            <div class="text-center mt-8 border-t border-gray-200 pt-6">
+                <button id="show-all-btn" class="w-full sm:w-auto bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-6 rounded-lg transition-colors">
+                    Tüm Tarif Kitabını Göster
+                </button>
+            </div>
         </div>
-
-        <!-- Butonlar (Tüm Tarifler) -->
-        <div class="text-center my-8 border-t border-gray-700 pt-8">
-            <p class="text-gray-500 mb-2">Veya...</p>
-            <button id="show-all-btn" class="w-full sm:w-auto bg-gray-600 hover:bg-gray-700 text-white font-bold py-3 px-8 rounded-full text-lg shadow-lg transform hover:scale-105 transition-transform duration-300">
-                Tüm Tarif Kitabını Göster
-            </button>
-        </div>
-
-        <!-- Sonuç Alanları -->
+        
+        <!-- Sonuç Alanı veya Kategorize Edilmiş Tarif Kitabı -->
         <div id="results-area">
-             <div id="perfect-matches-section" class="hidden">
-                <h2 id="perfect-matches-title" class="text-xl sm:text-2xl font-bold mb-4 text-amber-300"></h2>
-                <div id="perfect-matches-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6"></div>
-            </div>
-
-            <div id="near-misses-section" class="hidden mt-12">
-                <h2 class="text-xl sm:text-2xl font-bold mb-4 text-orange-400">Sadece 1 Malzeme Eksik!</h2>
-                <div id="near-misses-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6"></div>
-            </div>
-            
-            <p id="no-results" class="text-center text-gray-500 hidden mt-8">Uygun bir kokteyl bulunamadı.</p>
+            <!-- Başlangıçta kategorize edilmiş tarifler buraya gelecek -->
         </div>
 
     </div>
 
     <!-- Modallar -->
     <div id="ice-modal" class="modal hidden fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 z-50">
-        <div class="bg-gray-800 rounded-2xl shadow-2xl max-w-sm w-full p-6 text-center">
-            <h3 class="text-xl font-bold text-white mb-4">Bir Saniye...</h3>
-            <p class="text-gray-300 mb-6">"Buz" seçmediğini fark ettik. Çoğu kokteyl için buz gerekir. Dolabında buz var mı?</p>
+        <div class="bg-white rounded-2xl shadow-2xl max-w-sm w-full p-6 text-center">
+            <h3 class="text-xl font-bold text-gray-800 mb-4">Bir Saniye...</h3>
+            <p class="text-gray-600 mb-6">"Buz" seçmediğini fark ettik. Çoğu kokteyl için buz gerekir. Dolabında buz var mı?</p>
             <div class="flex justify-around">
-                <button id="ice-confirm-no" class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-6 rounded-full">Hayır, Buzum Yok</button>
-                <button id="ice-confirm-yes" class="bg-amber-500 hover:bg-amber-600 text-gray-900 font-bold py-2 px-6 rounded-full">Evet, Buzum Var!</button>
+                <button id="ice-confirm-no" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-6 rounded-full">Hayır, Buzum Yok</button>
+                <button id="ice-confirm-yes" class="bg-pink-600 hover:bg-pink-700 text-white font-bold py-2 px-6 rounded-full">Evet, Buzum Var!</button>
             </div>
         </div>
     </div>
     <div id="recipe-modal" class="modal hidden fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 z-50">
-        <div id="modal-content" class="bg-gray-800 rounded-2xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto relative"></div>
+        <div id="modal-content" class="bg-white rounded-2xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto relative"></div>
     </div>
     
     <!-- Yapay Zeka Sohbet Butonları ve Penceresi -->
     <div id="chat-container" class="fixed bottom-5 right-5 z-50 flex flex-col items-end gap-4">
         <!-- Trabzonlu Barmen Butonu -->
         <button data-character="TrabzonluBarmen" class="chat-fab-btn flex items-center gap-2 bg-blue-600 text-white font-bold px-4 py-3 rounded-full shadow-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 transform hover:scale-110 transition-transform duration-300">
-             <span class="hidden sm:inline">Trabzonlu Barmen'e Sor</span>
+             <span class="sm:inline">Trabzonlu Barmen'e Sor</span>
         </button>
         <!-- Tipsy Witch Butonu -->
         <button data-character="tipsyWitch" class="chat-fab-btn flex items-center gap-2 bg-purple-600 text-white font-bold px-4 py-3 rounded-full shadow-lg hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-400 transform hover:scale-110 transition-transform duration-300">
-             <span class="hidden sm:inline">Tipsy Witch'e Sor</span>
+             <span class="sm:inline">Tipsy Witch'e Sor</span>
         </button>
-
         <!-- Sohbet Penceresi -->
-        <div id="chat-window" class="hidden absolute bottom-20 right-0 w-80 sm:w-96 bg-gray-800 rounded-2xl shadow-2xl border border-gray-700 flex flex-col transform translate-y-4 opacity-0">
-            <!-- Başlık -->
-            <div id="chat-header" class="flex items-center justify-between p-3 border-b border-gray-700">
+        <div id="chat-window" class="hidden absolute bottom-20 right-0 w-80 sm:w-96 bg-white rounded-2xl shadow-2xl border border-gray-200 flex flex-col transform translate-y-4 opacity-0">
+            <div id="chat-header" class="flex items-center justify-between p-3 border-b border-gray-200">
                 <div class="flex items-center">
                     <img id="chat-avatar" src="" alt="Avatar" class="w-10 h-10 rounded-full mr-3 border-2">
                     <div>
-                        <p id="chat-name" class="font-bold text-white"></p>
-                        <p class="text-xs text-green-400">Çevrimiçi</p>
+                        <p id="chat-name" class="font-bold text-gray-800"></p>
+                        <p class="text-xs text-green-500">Çevrimiçi</p>
                     </div>
                 </div>
-                <button id="close-chat" class="text-gray-400 hover:text-white">&times;</button>
+                <button id="close-chat" class="text-gray-500 hover:text-gray-800 text-2xl">&times;</button>
             </div>
-            <!-- Mesajlar -->
-            <div id="chat-messages" class="flex-1 p-4 space-y-4 overflow-y-scroll h-96"></div>
-            <!-- Yazı Alanı -->
-            <div class="p-3 border-t border-gray-700 flex items-center">
-                <input type="text" id="chat-input" placeholder="Bir şeyler sor..." class="flex-1 bg-gray-700 text-white rounded-full py-2 px-4 focus:outline-none focus:ring-2 focus:ring-amber-500">
-                <button id="send-chat" class="ml-3 bg-amber-500 text-gray-900 rounded-full p-2 hover:bg-amber-600">
+            <div id="chat-messages" class="flex-1 p-4 space-y-4 overflow-y-scroll h-96 bg-gray-50"></div>
+            <div class="p-3 border-t border-gray-200 flex items-center">
+                <input type="text" id="chat-input" placeholder="Bir şeyler sor..." class="flex-1 bg-gray-100 text-gray-800 rounded-full py-2 px-4 focus:outline-none focus:ring-2 focus:ring-pink-500">
+                <button id="send-chat" class="ml-3 bg-pink-600 text-white rounded-full p-2 hover:bg-pink-700">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.428A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" /></svg>
                 </button>
             </div>
@@ -195,55 +136,28 @@
 
 
     <script>
-        // --- KÜTÜPHANE (VERİTABANI) ---
-        const ingredientsDB = {
-            alkoller: [ { id: 'vodka', name: 'Votka', abv: 40 }, { id: 'cin', name: 'Cin', abv: 40 }, { id: 'viski', name: 'Viski', abv: 40 }, { id: 'rom', name: 'Rom', abv: 40 }, { id: 'tekila', name: 'Tekila', abv: 40 }, { id: 'bira', name: 'Bira', abv: 5 }, { id: 'kahve_likoru', name: 'Kahve Likörü', abv: 20 }, { id: 'seftali_likoru', name: 'Şeftali Likörü', abv: 20 }, { id: 'campari', name: 'Campari', abv: 25 }, { id: 'tatli_vermut', name: 'Tatlı Vermut', abv: 15 }, { id: 'aperol', name: 'Aperol', abv: 11 }, { id: 'prosecco', name: 'Prosecco / Şampanya', abv: 12 }, { id: 'sarap', name: 'Kırmızı Şarap', abv: 13 }, { id: 'brandy', name: 'Brandy', abv: 40 } ],
-            yancilar: [ { id: 'tonik', name: 'Tonik' }, { id: 'kola', name: 'Kola' }, { id: 'soda', name: 'Soda' }, { id: 'zencefilli_gazoz', name: 'Zencefilli Gazoz' }, { id: 'greyfurtlu_gazoz', name: 'Greyfurtlu Gazoz' }, { id: 'enerji_icecegi', name: 'Enerji İçeceği' }, { id: 'portakal_suyu', name: 'Portakal Suyu' }, { id: 'limon_suyu', name: 'Limon Suyu' }, { id: 'kizilcik_suyu', name: 'Kızılcık Suyu' }, { id: 'greyfurt_suyu', name: 'Greyfurt Suyu' }, { id: 'ananas_suyu', name: 'Ananas Suyu' }, { id: 'buz', name: 'Buz' }, { id: 'nane', name: 'Nane' }, { id: 'limon', name: 'Limon Dilimi' }, { id: 'portakal', name: 'Portakal Dilimi' }, { id: 'seker_surubu', name: 'Şeker Şurubu' }, { id: 'krema', name: 'Krema / Süt' }, { id: 'hindistan_cevizi_kremi', name: 'Hindistan Cevizi Kremi' }, { id: 'grenadine', name: 'Nar Şurubu (Grenadine)' }, { id: 'tuz', name: 'Tuz' }, { id: 'angostura_bitters', name: 'Angostura Bitters' }, { id: 'espresso', name: 'Taze Espresso' }, { id: 'meyveler', name: 'Doğranmış Meyveler' } ]
-        };
-        const cocktailsDB = [
-            { name: 'Sex on the Beach', ingredients: [ { id: 'vodka', amount: '4 cl' }, { id: 'seftali_likoru', amount: '2 cl' }, { id: 'portakal_suyu', amount: '6 cl' }, { id: 'kizilcik_suyu', amount: '6 cl' }, { id: 'buz', amount: 'Bolca' } ], instructions: 'Buz dolu bir bardağa votka ve şeftali likörünü ekleyin. Üzerini portakal suyu ve kızılcık suyu ile tamamlayın. Hafifçe karıştırıp servis edin.', calories: 210 },
-            { name: 'Negroni', ingredients: [ { id: 'cin', amount: '3 cl' }, { id: 'campari', amount: '3 cl' }, { id: 'tatli_vermut', amount: '3 cl' }, { id: 'portakal', amount: '1 Kabuk' }, { id: 'buz', amount: 'Bolca' } ], instructions: 'Tüm alkolleri buz dolu bir karıştırma bardağında soğutun. Ardından taze buz dolu bir bardağa süzün. Portakal kabuğu ile süsleyin.', calories: 200 }, 
-            { name: 'Old Fashioned', ingredients: [ { id: 'viski', amount: '6 cl' }, { id: 'seker_surubu', amount: '1 cl' }, { id: 'angostura_bitters', amount: '2 damla' }, { id: 'portakal', amount: '1 Kabuk' }, { id: 'buz', amount: 'Büyük bir küp' } ], instructions: 'Şeker şurubu ve bitteri bir bardakta karıştırın. Viskiyi ve büyük bir buz küpünü ekleyin. Yavaşça karıştırarak soğutun. Portakal kabuğu ile süsleyin.', calories: 155 }, 
-            { name: 'Manhattan', ingredients: [ { id: 'viski', amount: '6 cl' }, { id: 'tatli_vermut', amount: '3 cl' }, { id: 'angostura_bitters', amount: '2 damla' }, { id: 'buz', amount: 'Bolca' } ], instructions: 'Tüm malzemeleri buz dolu bir karıştırma bardağında iyice soğuyana kadar karıştırın. Soğutulmuş bir kokteyl bardağına süzerek servis edin.', calories: 190 }, 
-            { name: 'Espresso Martini', ingredients: [ { id: 'vodka', amount: '5 cl' }, { id: 'kahve_likoru', amount: '3 cl' }, { id: 'espresso', amount: '3 cl' }, { id: 'buz', amount: 'Bolca' } ], instructions: 'Tüm malzemeleri buz dolu bir shakerda kuvvetlice çalkalayın. Soğutulmuş bir martini bardağına süzerek servis edin.', calories: 230 }, 
-            { name: 'Daiquiri', ingredients: [ { id: 'rom', amount: '6 cl' }, { id: 'limon_suyu', amount: '3 cl' }, { id: 'seker_surubu', amount: '2 cl' }, { id: 'buz', amount: 'Bolca' } ], instructions: 'Tüm malzemeleri buz dolu bir shakerda kuvvetlice çalkalayın. Soğutulmuş bir kokteyl bardağına süzerek servis edin.', calories: 220 }, 
-            { name: 'Pina Colada', ingredients: [ { id: 'rom', amount: '6 cl' }, { id: 'ananas_suyu', amount: '9 cl' }, { id: 'hindistan_cevizi_kremi', amount: '3 cl' }, { id: 'buz', amount: 'Bolca' } ], instructions: 'Tüm malzemeleri buz ile birlikte bir blendera koyun ve pürüzsüz olana kadar karıştırın. Büyük bir bardağa dökerek servis edin.', calories: 300 }, 
-            { name: 'Aperol Spritz', ingredients: [ { id: 'prosecco', amount: '9 cl' }, { id: 'aperol', amount: '6 cl' }, { id: 'soda', amount: '3 cl' }, { id: 'portakal', amount: '1 Dilim' }, { id: 'buz', amount: 'Bolca' } ], instructions: 'Buz dolu büyük bir şarap kadehine önce Prosecco\'yu, sonra Aperol\'ü ekleyin. Üzerini soda ile tamamlayın ve portakal dilimi ile süsleyin.', calories: 125 }, 
-            { name: 'Sangria', ingredients: [ { id: 'sarap', amount: '75 cl' }, { id: 'brandy', amount: '6 cl' }, { id: 'portakal_suyu', amount: '15 cl' }, { id: 'seker_surubu', amount: '5 cl' }, { id: 'meyveler', amount: 'Bolca' }, { id: 'buz', amount: 'Bolca' } ], instructions: 'Büyük bir sürahide şarap, brandy, portakal suyu ve şeker şurubunu karıştırın. Doğranmış meyveleri ekleyin. Servis etmeden önce en az 2 saat buzdolabında bekletin. Buz ile servis edin.', calories: 1500 }, 
-            { name: 'Submarino (Tekila & Bira)', ingredients: [ { id: 'bira', amount: '33 cl' }, { id: 'tekila', amount: '4 cl' }, { id: 'limon', amount: '1 Dilim' }, { id: 'tuz', amount: 'Bir tutam' } ], instructions: 'Biranızı bardağa doldurun. Tekila shot\'ınızı hazırlayın. Elinizin üzerine tuz döküp yalayabilir, limonu ısırabilir, ardından tekila shot\'ı içip üzerine biranızı yudumlayabilirsiniz. Alternatif: Tekila shot bardağını direkt bira bardağının içine bırakın!', calories: 250 }, 
-            { name: 'Cin Tonik', ingredients: [ { id: 'cin', amount: '5 cl' }, { id: 'tonik', amount: '15 cl' }, { id: 'limon', amount: '1 Dilim' }, { id: 'buz', amount: 'Bolca' } ], instructions: 'Bardağı ağzına kadar buzla doldurun. Üzerine cini ekleyin. Tonik ile bardağı tamamlayın ve bir dilim limon ile servis edin.', calories: 170 }, 
-            { name: 'Votka Portakal (Screwdriver)', ingredients: [ { id: 'vodka', amount: '5 cl' }, { id: 'portakal_suyu', amount: '15 cl' }, { id: 'buz', amount: 'Bolca' } ], instructions: 'Buzu bardağa doldurun. Votkayı ekleyin ve üzerini portakal suyu ile tamamlayın. Hafifçe karıştırıp servis edin.', calories: 180 }, 
-            { name: 'Cuba Libre', ingredients: [ { id: 'rom', amount: '5 cl' }, { id: 'kola', amount: '12 cl' }, { id: 'limon_suyu', amount: '1 cl' }, { id: 'limon', amount: '1 Dilim' }, { id: 'buz', amount: 'Bolca' } ], instructions: 'Bardağı buzla doldurun. Rom ve limon suyunu ekleyin. Üzerini kola ile tamamlayın ve bir dilim limon ile süsleyin.', calories: 160 }, 
-            { name: 'Moscow Mule', ingredients: [ { id: 'vodka', amount: '6 cl' }, { id: 'zencefilli_gazoz', amount: '12 cl' }, { id: 'limon_suyu', amount: '1 cl' }, { id: 'buz', amount: 'Bolca' }, { id: 'limon', amount: '1 Dilim' } ], instructions: 'Bakır bir kupa veya bardağı buzla doldurun. Votka ve limon suyunu ekleyin. Üzerini zencefilli gazoz ile tamamlayın ve karıştırın. Limon dilimi ile servis edin.', calories: 185 }, 
-            { name: 'Mojito', ingredients: [ { id: 'rom', amount: '6 cl' }, { id: 'soda', amount: 'Üzerini tamamla' }, { id: 'nane', amount: '6-8 Yaprak' }, { id: 'limon_suyu', amount: '3 cl' }, { id: 'seker_surubu', amount: '2 cl' }, { id: 'buz', amount: 'Kırık buz' } ], instructions: 'Nane yaprakları, limon suyu ve şeker şurubunu bardağın dibinde hafifçe ezin. Bardağı kırık buzla doldurun. Romu ekleyin ve karıştırın. Üzerini soda ile tamamlayın.', calories: 240 }, 
-            { name: 'Margarita', ingredients: [ { id: 'tekila', amount: '5 cl' }, { id: 'limon_suyu', amount: '3 cl' }, { id: 'portakal_suyu', amount: '2 cl (Triple Sec yerine)' }, { id: 'buz', amount: 'Bolca' } ], instructions: 'Tüm malzemeleri bol buz ile bir shakera koyun ve iyice çalkalayın. Soğutulmuş bir bardağa süzerek servis edin. İsteğe bağlı olarak bardağın ağzını tuz ile kaplayabilirsiniz.', calories: 200 }, 
-            { name: 'Whiskey Sour', ingredients: [ { id: 'viski', amount: '6 cl' }, { id: 'limon_suyu', amount: '3 cl' }, { id: 'seker_surubu', amount: '2 cl' }, { id: 'buz', amount: 'Bolca' } ], instructions: 'Tüm malzemeleri buz dolu bir shakerda kuvvetlice çalkalayın. Soğutulmuş bir bardağa, yeni buz üzerine süzerek servis edin.', calories: 210 }, 
-            { name: 'Tom Collins', ingredients: [ { id: 'cin', amount: '6 cl' }, { id: 'limon_suyu', amount: '3 cl' }, { id: 'seker_surubu', amount: '2 cl' }, { id: 'soda', amount: 'Üzerini tamamla' }, { id: 'buz', amount: 'Bolca' } ], instructions: 'Cin, limon suyu ve şeker şurubunu buz dolu bir bardakta karıştırın. Üzerini soda ile tamamlayın. Limon dilimi ile süsleyin.', calories: 190 }, 
-            { name: 'Black Russian', ingredients: [ { id: 'vodka', amount: '5 cl' }, { id: 'kahve_likoru', amount: '2 cl' }, { id: 'buz', amount: 'Bolca' } ], instructions: 'Buz dolu bir bardağa votka ve kahve likörünü ekleyin. Yavaşça karıştırın ve servis edin.', calories: 205 }, 
-            { name: 'White Russian', ingredients: [ { id: 'vodka', amount: '5 cl' }, { id: 'kahve_likoru', amount: '2 cl' }, { id: 'krema', amount: '3 cl' }, { id: 'buz', amount: 'Bolca' } ], instructions: 'Buz dolu bir bardağa votka ve kahve likörünü ekleyin. Üzerine yavaşça kremayı gezdirin. Karıştırmadan veya hafifçe karıştırarak servis edin.', calories: 260 }, 
-            { name: 'Sea Breeze', ingredients: [ { id: 'vodka', amount: '4 cl' }, { id: 'kizilcik_suyu', amount: '12 cl' }, { id: 'greyfurt_suyu', amount: '3 cl' }, { id: 'buz', amount: 'Bolca' } ], instructions: 'Buz dolu bir bardağa votkayı ekleyin. Üzerine kızılcık ve greyfurt suyunu ekleyip karıştırın.', calories: 180 }, 
-            { name: 'Paloma', ingredients: [ { id: 'tekila', amount: '6 cl' }, { id: 'greyfurtlu_gazoz', amount: 'Üzerini tamamla' }, { id: 'limon_suyu', amount: '1 cl' }, { id: 'buz', amount: 'Bolca' } ], instructions: 'Buz dolu bir bardağa tekila ve limon suyunu ekleyin. Üzerini greyfurtlu gazoz ile tamamlayın. Hafifçe karıştırıp servis edin.', calories: 170 }, 
-            { name: 'Tequila Sunrise', ingredients: [ { id: 'tekila', amount: '6 cl' }, { id: 'portakal_suyu', amount: '12 cl' }, { id: 'grenadine', amount: '1 cl' }, { id: 'buz', amount: 'Bolca' } ], instructions: 'Buz dolu bardağa tekila ve portakal suyunu ekleyip karıştırın. Nar şurubunu (grenadine) yavaşça bardağın kenarından dökerek dibe çökmesini ve renk geçişi oluşturmasını sağlayın. Karıştırmadan servis edin.', calories: 230 }, 
-            { name: 'Votka Enerji', ingredients: [ { id: 'vodka', amount: '5 cl' }, { id: 'enerji_icecegi', amount: '15 cl' }, { id: 'buz', amount: 'Bolca' } ], instructions: 'Buz dolu bir bardağa votkayı ekleyin. Üzerini enerji içeceği ile tamamlayın ve hafifçe karıştırın.', calories: 220 }, 
-            { name: 'Viski Enerji', ingredients: [ { id: 'viski', amount: '5 cl' }, { id: 'enerji_icecegi', amount: '15 cl' }, { id: 'buz', amount: 'Bolca' } ], instructions: 'Buz dolu bir bardağa viskiyi ekleyin. Üzerini enerji içeceği ile tamamlayın ve hafifçe karıştırın.', calories: 230 } ];
+        document.addEventListener('DOMContentLoaded', async () => {
+            let ingredientsDB = {};
+            let cocktailsDB = [];
 
-        // --- UYGULAMA MANTIĞI ---
-        document.addEventListener('DOMContentLoaded', () => {
+            try {
+                const response = await fetch('./database.json');
+                if (!response.ok) throw new Error('Network response was not ok');
+                const data = await response.json();
+                ingredientsDB = data.ingredientsDB;
+                cocktailsDB = data.cocktailsDB;
+            } catch (error) {
+                console.error("Veritabanı yüklenemedi:", error);
+                document.getElementById('results-area').innerHTML = '<p class="text-center text-red-500">Tarifler yüklenemedi. Lütfen database.json dosyasının doğru yerde olduğundan emin olun.</p>';
+                return;
+            }
+
             const ingredientsContainerEl = document.getElementById('ingredients-container');
             const findCocktailsBtn = document.getElementById('find-cocktails-btn');
             const showAllBtn = document.getElementById('show-all-btn');
             const singleAlcoholSelect = document.getElementById('single-alcohol-select');
             const findBySingleAlcoholBtn = document.getElementById('find-by-single-alcohol-btn');
-            const tabMyIngredients = document.getElementById('tab-my-ingredients');
-            const tabDiscover = document.getElementById('tab-discover');
-            const contentMyIngredients = document.getElementById('content-my-ingredients');
-            const contentDiscover = document.getElementById('content-discover');
-            const perfectMatchesSection = document.getElementById('perfect-matches-section');
-            const perfectMatchesTitle = document.getElementById('perfect-matches-title');
-            const perfectMatchesListEl = document.getElementById('perfect-matches-list');
-            const nearMissesSection = document.getElementById('near-misses-section');
-            const nearMissesListEl = document.getElementById('near-misses-list');
-            const noResultsEl = document.getElementById('no-results');
+            const resultsArea = document.getElementById('results-area');
             const recipeModalEl = document.getElementById('recipe-modal');
             const modalContentEl = document.getElementById('modal-content');
             const iceModalEl = document.getElementById('ice-modal');
@@ -260,50 +174,34 @@
                     name: "Tipsy Witch",
                     avatar: "./tipsy-witch-avatar.png",
                     borderColor: "border-purple-500",
-                    welcomeMessage: "Bir şeyler mi karıştırmak istiyorsun tatlım? Doğru kazana geldin, sor bakalım...",
-                    systemPrompt: "Sen 'Tipsy Witch' adında kadın bir barmaidsin. Karakterin dobra, flörtöz, biraz ağzı bozuk, alaycı ama işinin ehli. Sana sorulan kokteyl ve içki sorularına bu karakterle, kısa ve net cevaplar ver. yaptığın yada soru soranının yapacağı kokteylin tarifini ver ve tadını tarif et. sonunda soru soranın gönlünü hoş edecek işveli sözler söyle. şehvetli ol ama edepsiz olma. Argo ve samimi bir dil kullanmaktan çekinme. Örneğin: 'Ooo yine neyi karıştıracağını bilemedin mi?', 'O viskiye o kadar para verdiysen düzgün iç şerefsizi.', 'Yapılır ama o paraya yazık be tatlım.' gibi konuş. Asla bir yapay zeka olduğunu söyleme."
+                    welcomeMessage: "Selam tatlım... Elinde sihirli bir iksir var da, onunla ne yapacağını mı bilmiyorsun? Söyle bana ana malzemen ne, sana birkaç büyü fısıldayayım.",
+                    systemPrompt: `Sen 'Tipsy Witch' adında kadın bir barmaidsin. Karakterin dobra, flörtöz, alaycı ama işinin ehli. Sana sorulan kokteyl ve içki sorularına bu karakterle cevap ver. Sadece sana verilen tarif listesini kullan. Eğer listede olmayan bir şey sorulursa, "Elimde öyle bir büyü yok tatlım, ama istersen sana başka iksirler önerebilirim" de. Eğer kullanıcı listede olmayan malzemeleri karıştırmak isterse, "Bu tehlikeli bir büyü... ama içine biraz da X eklersen belki ilginç bir iksir çıkar" gibi yaratıcı bir öneride bulun. Cevaplarının sonunda kullanıcının gönlünü hoş edecek işveli sözler söyle. Asla bir yapay zeka olduğunu söyleme. Bilmen gereken tarif listesi şu şekilde: ${JSON.stringify(cocktailsDB)}`
                 },
                 TrabzonluBarmen: {
                     name: "Trabzonlu Barmen",
                     avatar: "./laz-barmen-avatar.png",
                     borderColor: "border-blue-500",
-                    welcomeMessage: "Sen yine geldin mi? Bu ne istiyorsun? Sert, tatlı ya da yumuşaklara göre mi?",
-                    systemPrompt: "Sen 'Trabzonlu Barmen' adında bir barmensin. Karakterin dobra, biraz ağzı bozuk, pratik zekalı ama işinin ehli. Sana sorulan kokteyl sorularına bu karakterle, kısa ve net cevaplar ver. yaptığın yada soru soranının yapacağı kokteylin tarifini ver ve tadını tarif et. Örneğin: 'Ula yine neyi karıştıracağını bilemedin mi?', 'O viskiye o kadar para verdiysen düzgün iç onu!' gibi konuş. Argo konuşmaktan çekinme. seni zorlayana siktiri çek. Asla bir yapay zeka olduğunu söyleme."
+                    welcomeMessage: "Ula yine elinde bir şişeyle kalmışsın da, ne yapacağını mı düşünüyorsun? Söyle bakalım ne var o şişede, sana göre bir şeyler ayarlarız da.",
+                    systemPrompt: `Sen 'Trabzonlu Barmen' adında bir barmensin. Karakterin dobra, pratik zekalı ama işinin ehli. Sana sorulan kokteyl sorularına bu karakterle, kısa ve net cevaplar ver. Sadece sana verilen tarif listesini kullan. Eğer listede olmayan bir şey sorulursa, "Ula bizde öyle bi tarif yok da, istersen başka bişe vereyim?" de. Eğer kullanıcı listede olmayan malzemeleri karıştırmak isterse, "Ula o üçünü karişturursan görürsün ebenun amini da! Mideni delmek mi istiyisun? Bırak o fantazileri, gel sana onlarla ayrı ayrı yapacağun güzel tarifler vereyim." gibi dobra bir cevap ver. Asla bir yapay zeka olduğunu söyleme. Bilmen gereken tarif listesi şu şekilde: ${JSON.stringify(cocktailsDB)}`
                 }
             };
             let currentAICharacter = null;
             let chatHistory = [];
 
             function generateImagePath(cocktailName) {
-                const fileName = cocktailName
-                    .toLowerCase()
-                    .replace(/[^a-z0-9\s-]/g, '')
-                    .replace(/\s+/g, '-');
+                const fileName = cocktailName.toLowerCase().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-');
                 return `./${fileName}.jpg`;
             }
 
             function initializeUI() {
-                ingredientsContainerEl.innerHTML = '';
-                for (const category in ingredientsDB) {
-                    const categoryDiv = document.createElement('div');
-                    const categoryTitle = category.charAt(0).toUpperCase() + category.slice(1);
-                    categoryDiv.innerHTML = `<h3 class="text-xl font-bold mb-3 text-amber-200">${categoryTitle}</h3>`;
-                    
-                    const itemsGrid = document.createElement('div');
-                    itemsGrid.className = 'grid grid-cols-1 sm:grid-cols-2 gap-2';
-
-                    ingredientsDB[category].forEach(ingredient => {
-                        const itemDiv = document.createElement('div');
-                        itemDiv.className = 'flex items-center';
-                        itemDiv.innerHTML = `
-                            <input type="checkbox" id="${ingredient.id}" name="${ingredient.id}" class="custom-checkbox h-5 w-5 rounded bg-gray-700 border-gray-600 text-amber-500 focus:ring-amber-500 cursor-pointer">
-                            <label for="${ingredient.id}" class="ml-2 text-gray-300 cursor-pointer">${ingredient.name}</label>
-                        `;
-                        itemsGrid.appendChild(itemDiv);
-                    });
-                    categoryDiv.appendChild(itemsGrid);
-                    ingredientsContainerEl.appendChild(categoryDiv);
-                }
+                const allIngredients = [...ingredientsDB.alkoller, ...ingredientsDB.yancilar];
+                allIngredients.sort((a, b) => a.name.localeCompare(b.name, 'tr'));
+                ingredientsContainerEl.innerHTML = allIngredients.map(ingredient => `
+                    <div class="flex items-center">
+                        <input type="checkbox" id="${ingredient.id}" name="${ingredient.id}" class="custom-checkbox h-4 w-4 rounded border-gray-300 text-pink-600 focus:ring-pink-500">
+                        <label for="${ingredient.id}" class="ml-2 text-sm text-gray-600">${ingredient.name}</label>
+                    </div>
+                `).join('');
 
                 singleAlcoholSelect.innerHTML = '<option value="">Bir alkol seç...</option>';
                 ingredientsDB.alkoller.forEach(alkol => {
@@ -314,90 +212,100 @@
                 });
             }
             
-            function startSearchProcess() {
-                const isBuzSelected = document.getElementById('buz').checked;
-                const selectedAnyIngredient = document.querySelector('#ingredients-container input:checked');
-
-                if (!selectedAnyIngredient) {
-                    alert('Lütfen en az bir malzeme seçin!');
-                    return;
-                }
-
-                perfectMatchesTitle.textContent = 'Yapabileceğin Kokteyller';
-                nearMissesSection.classList.add('hidden'); 
-
-                if (!isBuzSelected) {
-                    iceModalEl.classList.remove('hidden');
-                } else {
-                    performSearch();
-                }
-            }
-            
-            function performSearch() {
-                const selectedIngredients = Array.from(document.querySelectorAll('#ingredients-container input:checked')).map(input => input.id);
+            function displayResults(cocktails, title, showNearMisses = false) {
                 const perfectMatches = [];
                 const nearMisses = [];
+                const selectedIngredients = Array.from(document.querySelectorAll('#ingredients-container input:checked')).map(input => input.id);
 
-                cocktailsDB.forEach(cocktail => {
-                    const missingIngredients = cocktail.ingredients.filter(ing => !selectedIngredients.includes(ing.id));
-                    
-                    if (missingIngredients.length === 0) {
-                        perfectMatches.push(cocktail);
-                    } else if (missingIngredients.length === 1) {
-                        const missingId = missingIngredients[0].id;
-                        const isCoreAlcohol = ingredientsDB.alkoller.some(alc => alc.id === missingId);
-                        if (!isCoreAlcohol) {
+                if (showNearMisses) {
+                    cocktails.forEach(cocktail => {
+                        const missingIngredients = cocktail.ingredients.filter(ing => !selectedIngredients.includes(ing.id));
+                        if (missingIngredients.length === 0) {
+                            perfectMatches.push(cocktail);
+                        } else if (missingIngredients.length === 1 && !ingredientsDB.alkoller.some(alc => alc.id === missingIngredients[0].id)) {
                             nearMisses.push({ ...cocktail, missing: missingIngredients[0] });
                         }
+                    });
+                } else {
+                    perfectMatches.push(...cocktails);
+                }
+
+                let html = '';
+                if (perfectMatches.length > 0) {
+                    html += `<h2 class="text-2xl font-bold mb-6 text-gray-800">${title}</h2>`;
+                    html += '<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">';
+                    perfectMatches.forEach(cocktail => {
+                        const imagePath = generateImagePath(cocktail.name);
+                        html += `
+                            <div class="bg-white rounded-lg shadow-md overflow-hidden cursor-pointer transform hover:-translate-y-1 transition-transform" onclick='showRecipeModal(${JSON.stringify(cocktail)})'>
+                                <img src="${imagePath}" alt="${cocktail.name}" class="w-full h-48 object-cover" onerror="this.onerror=null;this.src='https://placehold.co/400x400/e5e7eb/9ca3af?text=Resim+Yok';">
+                                <div class="p-4">
+                                    <h3 class="text-lg font-semibold text-gray-800">${cocktail.name}</h3>
+                                </div>
+                            </div>`;
+                    });
+                    html += '</div>';
+                }
+
+                if (nearMisses.length > 0) {
+                    html += `<h2 class="text-2xl font-bold mt-12 mb-6 text-orange-500">Sadece 1 Malzeme Eksik!</h2>`;
+                    html += '<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">';
+                    nearMisses.forEach(cocktail => {
+                        const imagePath = generateImagePath(cocktail.name);
+                        const missingIngredientInfo = [...ingredientsDB.alkoller, ...ingredientsDB.yancilar].find(i => i.id === cocktail.missing.id);
+                        html += `
+                            <div class="bg-white rounded-lg shadow-md overflow-hidden cursor-pointer transform hover:-translate-y-1 transition-transform border-2 border-dashed border-orange-400" onclick='showRecipeModal(${JSON.stringify(cocktail)})'>
+                                <img src="${imagePath}" alt="${cocktail.name}" class="w-full h-48 object-cover opacity-70" onerror="this.onerror=null;this.src='https://placehold.co/400x400/e5e7eb/9ca3af?text=Resim+Yok';">
+                                <div class="p-4">
+                                    <h3 class="text-lg font-semibold text-orange-500">${cocktail.name}</h3>
+                                    <div class="mt-2 bg-orange-100 text-orange-700 p-2 rounded-lg text-center text-sm">
+                                        <p class="font-bold">Sadece bu eksik: ${missingIngredientInfo.name}</p>
+                                    </div>
+                                </div>
+                            </div>`;
+                    });
+                    html += '</div>';
+                }
+
+                if (perfectMatches.length === 0 && nearMisses.length === 0) {
+                    html = `<p class="text-center text-gray-500 mt-8">Uygun bir kokteyl bulunamadı.</p>`;
+                }
+                
+                resultsArea.innerHTML = html;
+            }
+
+            function renderCategorizedCookbook() {
+                const categorized = {};
+                cocktailsDB.forEach(cocktail => {
+                    const base = ingredientsDB.alkoller.find(a => a.id === cocktail.base_alcohol);
+                    if (base) {
+                        if (!categorized[base.name]) {
+                            categorized[base.name] = [];
+                        }
+                        categorized[base.name].push(cocktail);
                     }
                 });
 
-                displayPerfectMatches(perfectMatches);
-                displayNearMisses(nearMisses);
-
-                if (perfectMatches.length === 0 && nearMisses.length === 0) {
-                    noResultsEl.classList.remove('hidden');
-                } else {
-                    noResultsEl.classList.add('hidden');
-                }
-            }
-
-            function displayPerfectMatches(cocktails) {
-                perfectMatchesListEl.innerHTML = '';
-                if (cocktails.length > 0) {
-                    perfectMatchesSection.classList.remove('hidden');
-                    cocktails.forEach(cocktail => {
+                let html = '';
+                for (const category in categorized) {
+                    html += `<h2 class="text-3xl font-bold mb-6 text-gray-800 border-b-2 border-pink-500 pb-2">${category} Kokteylleri</h2>`;
+                    html += '<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-12">';
+                    categorized[category].forEach(cocktail => {
                         const imagePath = generateImagePath(cocktail.name);
-                        const card = document.createElement('div');
-                        card.className = 'bg-gray-800 rounded-2xl shadow-lg overflow-hidden cursor-pointer transform hover:-translate-y-1 transition-transform duration-300';
-                        card.innerHTML = `<img src="${imagePath}" alt="${cocktail.name}" class="w-full h-48 object-cover" onerror="this.onerror=null;this.src='https://placehold.co/400x400/1f2937/f3f4f6?text=Resim+Yok';"><div class="p-4"><h3 class="text-xl font-bold text-amber-400">${cocktail.name}</h3></div>`;
-                        card.addEventListener('click', () => showRecipeModal(cocktail));
-                        perfectMatchesListEl.appendChild(card);
+                        html += `
+                            <div class="bg-white rounded-lg shadow-md overflow-hidden cursor-pointer transform hover:-translate-y-1 transition-transform" onclick='showRecipeModal(${JSON.stringify(cocktail)})'>
+                                <img src="${imagePath}" alt="${cocktail.name}" class="w-full h-48 object-cover" onerror="this.onerror=null;this.src='https://placehold.co/400x400/e5e7eb/9ca3af?text=Resim+Yok';">
+                                <div class="p-4">
+                                    <h3 class="text-lg font-semibold text-gray-800">${cocktail.name}</h3>
+                                </div>
+                            </div>`;
                     });
-                } else {
-                    perfectMatchesSection.classList.add('hidden');
+                    html += '</div>';
                 }
-            }
-
-            function displayNearMisses(cocktails) {
-                nearMissesListEl.innerHTML = '';
-                if (cocktails.length > 0) {
-                    nearMissesSection.classList.remove('hidden');
-                    cocktails.forEach(cocktail => {
-                        const imagePath = generateImagePath(cocktail.name);
-                        const missingIngredientInfo = Object.values(ingredientsDB).flat().find(i => i.id === cocktail.missing.id);
-                        const card = document.createElement('div');
-                        card.className = 'bg-gray-800 rounded-2xl shadow-lg overflow-hidden cursor-pointer transform hover:-translate-y-1 transition-transform duration-300 border-2 border-dashed border-orange-400/50';
-                        card.innerHTML = `<img src="${imagePath}" alt="${cocktail.name}" class="w-full h-48 object-cover opacity-70" onerror="this.onerror=null;this.src='https://placehold.co/400x400/1f2937/f3f4f6?text=Resim+Yok';"><div class="p-4"><h3 class="text-xl font-bold text-orange-400">${cocktail.name}</h3><div class="mt-2 bg-orange-900/50 text-orange-300 p-2 rounded-lg text-center text-sm"><p class="font-bold">Sadece bu eksik:</p><p>${missingIngredientInfo.name}</p></div></div>`;
-                        card.addEventListener('click', () => showRecipeModal(cocktail));
-                        nearMissesListEl.appendChild(card);
-                    });
-                } else {
-                    nearMissesSection.classList.add('hidden');
-                }
+                resultsArea.innerHTML = html;
             }
             
-            function showRecipeModal(cocktail) {
+            window.showRecipeModal = function(cocktail) {
                 let totalPureAlcohol = 0;
                 cocktail.ingredients.forEach(ing => {
                     const alcoholInfo = ingredientsDB.alkoller.find(alc => alc.id === ing.id);
@@ -411,30 +319,39 @@
                 const imagePath = generateImagePath(cocktail.name);
 
                 modalContentEl.innerHTML = `
-                    <button id="close-modal-btn" class="absolute top-4 right-4 text-gray-400 hover:text-white text-2xl z-10">&times;</button>
-                    <img src="${imagePath}" alt="${cocktail.name}" class="w-full h-64 object-cover rounded-t-2xl" onerror="this.onerror=null;this.src='https://placehold.co/600x400/1f2937/f3f4f6?text=Resim+Yok';">
+                    <button id="close-modal-btn" class="absolute top-4 right-4 text-gray-400 hover:text-gray-800 text-2xl z-10">&times;</button>
+                    <img src="${imagePath}" alt="${cocktail.name}" class="w-full h-64 object-cover rounded-t-2xl" onerror="this.onerror=null;this.src='https://placehold.co/600x400/e5e7eb/9ca3af?text=Resim+Yok';">
                     <div class="p-6">
-                        <h2 class="text-3xl font-display text-amber-400 mb-4">${cocktail.name}</h2>
-                        <div class="flex justify-around text-center mb-6 bg-gray-900 p-3 rounded-lg">
-                            <div><p class="text-sm text-gray-400">Kalori</p><p class="text-lg font-bold text-white">${cocktail.calories} kcal</p></div>
-                            <div><p class="text-sm text-gray-400">Saf Alkol</p><p class="text-lg font-bold text-white">${totalPureAlcohol.toFixed(1)} cl</p></div>
+                        <h2 class="text-3xl font-display text-pink-600 mb-4">${cocktail.name}</h2>
+                        <div class="flex justify-around text-center mb-6 bg-gray-100 p-3 rounded-lg">
+                            <div><p class="text-sm text-gray-500">Kalori</p><p class="text-lg font-bold text-gray-800">${cocktail.calories} kcal</p></div>
+                            <div><p class="text-sm text-gray-500">Saf Alkol</p><p class="text-lg font-bold text-gray-800">${totalPureAlcohol.toFixed(1)} cl</p></div>
                         </div>
-                        <h3 class="text-xl font-bold text-amber-300 mb-2">Malzemeler</h3>
-                        <ul class="list-disc list-inside mb-6 text-gray-300">
-                            ${cocktail.ingredients.map(ing => { const ingInfo = Object.values(ingredientsDB).flat().find(i => i.id === ing.id); return `<li>${ing.amount} ${ingInfo.name}</li>`; }).join('')}
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">Malzemeler</h3>
+                        <ul class="list-disc list-inside mb-6 text-gray-600">
+                            ${cocktail.ingredients.map(ing => { const ingInfo = [...ingredientsDB.alkoller, ...ingredientsDB.yancilar].find(i => i.id === ing.id); return `<li>${ing.amount} ${ingInfo.name}</li>`; }).join('')}
                         </ul>
-                        <h3 class="text-xl font-bold text-amber-300 mb-2">Yapılışı</h3>
-                        <p class="text-gray-300 leading-relaxed">${cocktail.instructions}</p>
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">Yapılışı</h3>
+                        <p class="text-gray-600 leading-relaxed">${cocktail.instructions}</p>
                     </div>`;
                 recipeModalEl.classList.remove('hidden');
                 document.getElementById('close-modal-btn').addEventListener('click', () => recipeModalEl.classList.add('hidden'));
             }
             
-            function showAllRecipes() {
-                perfectMatchesTitle.textContent = 'Tüm Tarifler Kitabı';
-                nearMissesSection.classList.add('hidden');
-                noResultsEl.classList.add('hidden');
-                displayPerfectMatches(cocktailsDB);
+            function startSearchProcess() {
+                const selectedAnyIngredient = document.querySelector('#ingredients-container input:checked');
+                if (!selectedAnyIngredient) {
+                    alert('Lütfen en az bir malzeme seçin!');
+                    return;
+                }
+                const isBuzSelected = document.getElementById('buz').checked;
+                if (!isBuzSelected) {
+                    iceModalEl.classList.remove('hidden');
+                } else {
+                    const selectedIngredients = Array.from(document.querySelectorAll('#ingredients-container input:checked')).map(input => input.id);
+                    const availableCocktails = cocktailsDB.filter(cocktail => cocktail.ingredients.every(ing => selectedIngredients.includes(ing.id)));
+                    displayResults(cocktailsDB, 'Yapabileceğin Kokteyller', true);
+                }
             }
 
             function handleSingleAlcoholSearch() {
@@ -444,50 +361,18 @@
                     return;
                 }
                 const selectedAlcohol = ingredientsDB.alkoller.find(a => a.id === selectedAlcoholId);
-                const matchingCocktails = cocktailsDB.filter(cocktail => 
-                    cocktail.ingredients.some(ing => ing.id === selectedAlcoholId)
-                );
-
-                perfectMatchesTitle.textContent = `${selectedAlcohol.name} ile Yapabileceğin Kokteyller`;
-                nearMissesSection.classList.add('hidden');
-                displayPerfectMatches(matchingCocktails);
-
-                if (matchingCocktails.length === 0) {
-                    noResultsEl.classList.remove('hidden');
-                } else {
-                    noResultsEl.classList.add('hidden');
-                }
-            }
-
-            function switchTab(tabId) {
-                document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active', 'text-gray-900', 'bg-amber-500'));
-                document.querySelectorAll('.tab-content').forEach(content => content.classList.add('hidden'));
-                
-                const activeTab = document.getElementById(tabId);
-                const activeContentId = tabId.replace('tab-', 'content-');
-                const activeContent = document.getElementById(activeContentId);
-
-                activeTab.classList.add('active', 'text-gray-900', 'bg-amber-500');
-                activeTab.classList.remove('text-gray-400');
-                activeContent.classList.remove('hidden');
-
-                perfectMatchesSection.classList.add('hidden');
-                nearMissesSection.classList.add('hidden');
-                noResultsEl.classList.add('hidden');
+                const matchingCocktails = cocktailsDB.filter(cocktail => cocktail.ingredients.some(ing => ing.id === selectedAlcoholId));
+                displayResults(matchingCocktails, `${selectedAlcohol.name} ile Yapabileceğin Kokteyller`);
             }
 
             function setupChatWindow(characterKey) {
                 currentAICharacter = aiCharacters[characterKey];
                 chatHistory = [];
-
                 document.getElementById('chat-avatar').src = currentAICharacter.avatar;
                 document.getElementById('chat-name').textContent = currentAICharacter.name;
-                
                 const avatarImg = document.getElementById('chat-avatar');
                 avatarImg.classList.remove('border-purple-500', 'border-blue-500');
                 avatarImg.classList.add(currentAICharacter.borderColor);
-
-                const chatMessages = document.getElementById('chat-messages');
                 chatMessages.innerHTML = '';
                 appendMessage(currentAICharacter.welcomeMessage, 'ai');
             }
@@ -495,43 +380,24 @@
             async function askBarmaidAI() {
                 const userMessage = chatInput.value.trim();
                 if (!userMessage || !currentAICharacter) return;
-
                 appendMessage(userMessage, 'user');
                 chatInput.value = '';
-                
                 appendMessage('...', 'ai', true);
-
                 chatHistory.push({ role: "user", parts: [{ text: userMessage }] });
-
                 try {
                     const apiKey = "AIzaSyBEphcJz_gqnj671A7adQKBUlcmo9TsnsQ"; 
                     const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
-                    
-                    if (apiKey === "BURAYA_KENDİ_API_ANAHTARINI_YAPIŞTIR") {
+                    if (apiKey.startsWith("BURAYA")) {
                         updateLastMessage("API anahtarı eksik.");
                         return;
                     }
-
-                    const payload = {
-                        contents: [
-                            { role: "user", parts: [{ text: currentAICharacter.systemPrompt }] },
-                            ...chatHistory
-                        ]
-                    };
-                    
-                    const response = await fetch(apiUrl, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(payload)
-                    });
-
+                    const payload = { contents: [ { role: "user", parts: [{ text: currentAICharacter.systemPrompt }] }, ...chatHistory ] };
+                    const response = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
                     if (!response.ok) throw new Error(`API hatası: ${response.status}`);
-
                     const result = await response.json();
                     const aiMessage = result.candidates[0].content.parts[0].text;
                     chatHistory.push({ role: "model", parts: [{ text: aiMessage }] });
                     updateLastMessage(aiMessage);
-
                 } catch (error) {
                     console.error("Yapay Zeka Hatası:", error);
                     updateLastMessage("Kusura bakma, şu an kafam kazan gibi. Sonra konuşalım.");
@@ -541,16 +407,14 @@
             function appendMessage(text, sender, isTyping = false) {
                 const messageDiv = document.createElement('div');
                 messageDiv.classList.add('flex', sender === 'user' ? 'justify-end' : 'justify-start');
-                
                 const bubble = document.createElement('div');
-                bubble.classList.add(sender === 'user' ? 'chat-bubble-user' : 'chat-bubble-ai', 'p-3', 'rounded-lg', 'max-w-xs');
+                bubble.classList.add(sender === 'user' ? 'chat-bubble-user' : 'chat-bubble-ai', 'p-3', 'rounded-lg', 'max-w-xs', 'text-sm', 'sm:text-base');
                 if (isTyping) {
                     bubble.id = 'typing-indicator';
-                    bubble.innerHTML = `<p class="text-sm animate-pulse">${text}</p>`;
+                    bubble.innerHTML = `<p class="animate-pulse">${text}</p>`;
                 } else {
-                    bubble.innerHTML = `<p class="text-sm">${text}</p>`;
+                    bubble.innerHTML = `<p>${text}</p>`;
                 }
-                
                 messageDiv.appendChild(bubble);
                 chatMessages.appendChild(messageDiv);
                 chatMessages.scrollTop = chatMessages.scrollHeight;
@@ -559,7 +423,7 @@
             function updateLastMessage(text) {
                 const typingIndicator = document.getElementById('typing-indicator');
                 if (typingIndicator) {
-                    typingIndicator.innerHTML = `<p class="text-sm">${text}</p>`;
+                    typingIndicator.innerHTML = `<p>${text}</p>`;
                     typingIndicator.removeAttribute('id');
                     typingIndicator.querySelector('p').classList.remove('animate-pulse');
                 }
@@ -567,48 +431,38 @@
 
             // Olay dinleyicileri
             findCocktailsBtn.addEventListener('click', startSearchProcess);
-            showAllBtn.addEventListener('click', showAllRecipes);
+            showAllBtn.addEventListener('click', renderCategorizedCookbook);
             findBySingleAlcoholBtn.addEventListener('click', handleSingleAlcoholSearch);
-            
-            tabMyIngredients.addEventListener('click', () => switchTab('tab-my-ingredients'));
-            tabDiscover.addEventListener('click', () => switchTab('tab-discover'));
-
             iceConfirmYesBtn.addEventListener('click', () => {
                 document.getElementById('buz').checked = true;
                 iceModalEl.classList.add('hidden');
-                performSearch();
+                startSearchProcess();
             });
-
             iceConfirmNoBtn.addEventListener('click', () => {
                 iceModalEl.classList.add('hidden');
-                performSearch();
+                startSearchProcess();
             });
-
             recipeModalEl.addEventListener('click', (e) => {
                 if (e.target.id === 'recipe-modal') {
                     recipeModalEl.classList.add('hidden');
                 }
             });
-
             document.querySelectorAll('.chat-fab-btn').forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     const characterKey = e.currentTarget.dataset.character;
                     setupChatWindow(characterKey);
-                    
                     chatWindow.classList.remove('hidden');
                     setTimeout(() => {
                         chatWindow.classList.remove('opacity-0', 'translate-y-4');
                     }, 10);
                 });
             });
-
             closeChat.addEventListener('click', () => {
                 chatWindow.classList.add('opacity-0', 'translate-y-4');
                 setTimeout(() => {
                     chatWindow.classList.add('hidden');
                 }, 300);
             });
-
             sendChat.addEventListener('click', askBarmaidAI);
             chatInput.addEventListener('keypress', (e) => {
                 if (e.key === 'Enter') askBarmaidAI();
@@ -616,7 +470,7 @@
 
             // Başlangıç
             initializeUI();
-            switchTab('tab-my-ingredients'); 
+            renderCategorizedCookbook(); // Sayfa ilk açıldığında tarif kitabını göster
         });
     </script>
 </body>
